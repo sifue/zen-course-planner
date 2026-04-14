@@ -24,6 +24,7 @@ const CATEGORY_OPTIONS = [
   { value: 'multilingual_information_understanding' as const, label: '多言語情報理解', color: 'bg-cyan-100 text-cyan-800 data-[state=on]:bg-cyan-600 data-[state=on]:text-white data-[state=on]:border-cyan-600' },
   { value: 'world_understanding' as const, label: '世界理解', color: 'bg-amber-100 text-amber-800 data-[state=on]:bg-amber-600 data-[state=on]:text-white data-[state=on]:border-amber-600' },
   { value: 'social_connection' as const, label: '社会接続', color: 'bg-orange-100 text-orange-800 data-[state=on]:bg-orange-600 data-[state=on]:text-white data-[state=on]:border-orange-600' },
+  { value: 'digital_industry' as const, label: 'デジタル産業', color: 'bg-pink-100 text-pink-800 data-[state=on]:bg-pink-600 data-[state=on]:text-white data-[state=on]:border-pink-600' },
   { value: 'graduation_project' as const, label: '卒業プロジェクト', color: 'bg-red-100 text-red-800 data-[state=on]:bg-red-600 data-[state=on]:text-white data-[state=on]:border-red-600' },
   { value: 'free' as const, label: '自由', color: 'bg-gray-100 text-gray-600 data-[state=on]:bg-gray-500 data-[state=on]:text-white data-[state=on]:border-gray-500' },
 ]

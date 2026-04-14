@@ -112,6 +112,16 @@ export function useFilters(): UseFiltersReturn {
           if (category === course.band) { matches = true; break }
           // 展開科目系統で絞り込み
           if (course.band === 'expansion' && course.expansionTrack === category) { matches = true; break }
+          // 多言語情報理解: 展開科目系統 + 基礎科目の多言語ITコミュニケーショングループを統合
+          if (
+            category === 'multilingual_information_understanding' &&
+            course.band === 'foundation' &&
+            course.foundationGroups.includes('multilingual_it_communication')
+          ) {
+            matches = true; break
+          }
+          // デジタル産業: isDigitalIndustryHistoryEligible フラグで絞り込み
+          if (category === 'digital_industry' && course.isDigitalIndustryHistoryEligible) { matches = true; break }
         }
         if (!matches) return false
       }
