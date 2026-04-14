@@ -27,7 +27,10 @@ const INFORMATION_CURRICULUM: string[] = [
   'Webアプリケーション開発1', 'Webアプリケーション開発2',
   'Webユーザーエクスペリエンス', 'メディアアート史',
   'IT産業史',
-  // 2年次
+  '機械翻訳実践（英語読解・作文）',
+  // 2年次（多言語情報理解：情報ルート推奨科目）
+  '機械翻訳実践（情報）', '機械翻訳実践（法学）',
+  '機械翻訳実践（自然科学）',
   'Webアプリケーション開発3', 'Webアプリケーション開発4',
   'Linux概論', 'インターネット概論', 'コンピュータ概論', '情報処理概論',
   'Javaプログラミング演習', 'オブジェクト指向プログラミング',
@@ -45,7 +48,10 @@ const DATA_SCIENCE_CURRICULUM: string[] = [
   'ITリテラシー', 'アカデミックリテラシー', '現代社会と数学',
   '人工知能活用実践', 'データサイエンス概論',
   'Pythonプログラミング', 'IT産業史',
-  // 2年次
+  '機械翻訳実践（英語読解・作文）',
+  // 2年次（多言語情報理解：データサイエンスルート推奨科目）
+  '機械翻訳実践（情報）',
+  '機械翻訳実践（自然科学）', '機械翻訳実践（異文化理解）',
   'Pythonプログラミング応用',
   'データ分析演習', 'ビジネスデータ分析基礎',
   'マクロ経済学', 'ミクロ経済学',
@@ -63,7 +69,10 @@ const ECONOMY_MARKETS_CURRICULUM: string[] = [
   'ITリテラシー', 'アカデミックリテラシー', '経済入門',
   '人工知能活用実践', '企業経営', '地域アントレプレナーシップ',
   'IT産業史',
-  // 2年次
+  '機械翻訳実践（英語読解・作文）',
+  // 2年次（多言語情報理解：経済・マーケットルート推奨科目）
+  '機械翻訳実践（異文化理解）', '機械翻訳実践（日本研究）',
+  '機械翻訳実践（法学）',
   'マクロ経済学', 'ミクロ経済学', '企業経営とファイナンス',
   'デジタル・マーケティング', 'スタートアップ',
   // 3年次
@@ -234,10 +243,17 @@ function isNeededForGraduation(
   if (!checkResult.introduction.ok && course.band === 'introduction') return true
 
   // 基礎科目不足
-  if (!checkResult.foundation.ok && course.band === 'foundation') {
-    for (const group of course.foundationGroups) {
-      if (!checkResult.foundation.groups[group].ok) return true
+  if (course.band === 'foundation') {
+    if (!checkResult.foundation.ok) {
+      for (const group of course.foundationGroups) {
+        if (!checkResult.foundation.groups[group].ok) return true
+      }
     }
+    // 多言語情報理解の合算要件不足（機械翻訳実践系の基礎科目を補填）
+    if (
+      !checkResult.expansion.multilingualInfoUnderstandingCombined.ok &&
+      course.foundationGroups.includes('multilingual_it_communication')
+    ) return true
   }
 
   // 展開科目不足（合計74単位、または各サブ要件）
