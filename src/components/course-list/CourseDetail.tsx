@@ -11,12 +11,14 @@ interface CourseDetailProps {
   onClose: () => void
   onAdd: (courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => void
   onRemove: (courseId: string) => void
+  /** + ボタン押下時と同様のクイック追加ダイアログを開くコールバック */
+  onQuickAdd?: (course: Course) => void
 }
 
 /**
  * 科目詳細パネル（クリック時に表示）
  */
-export function CourseDetail({ course, isPlaced, onClose, onAdd, onRemove }: CourseDetailProps) {
+export function CourseDetail({ course, isPlaced, onClose, onAdd, onRemove, onQuickAdd }: CourseDetailProps) {
   if (!course) return null
 
   const bandColors = BAND_COLORS[course.band]
@@ -108,7 +110,13 @@ export function CourseDetail({ course, isPlaced, onClose, onAdd, onRemove }: Cou
           <Button
             variant="primary"
             size="sm"
-            onClick={() => onAdd(course.id, course.year, course.quarters[0] as 1 | 2 | 3 | 4 ?? 1)}
+            onClick={() => {
+              if (onQuickAdd) {
+                onQuickAdd(course)
+              } else {
+                onAdd(course.id, course.year, (course.quarters[0] as 1 | 2 | 3 | 4) ?? 1)
+              }
+            }}
             className="flex-1"
           >
             計画に追加

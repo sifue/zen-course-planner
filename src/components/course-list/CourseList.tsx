@@ -128,6 +128,7 @@ export function CourseList({
           onClose={() => setSelectedCourse(null)}
           onAdd={onAddCourse}
           onRemove={onRemoveCourse}
+          onQuickAdd={handleQuickAdd}
         />
       )}
 
