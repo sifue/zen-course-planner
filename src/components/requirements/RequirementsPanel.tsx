@@ -220,7 +220,7 @@ function AccordionSection({ value, label, children }: AccordionSectionProps) {
           <ChevronDown className="h-3.5 w-3.5 transition-transform data-[state=open]:rotate-180" />
         </Accordion.Trigger>
       </Accordion.Header>
-      <Accordion.Content className="pt-2 space-y-2 data-[state=closed]:hidden">
+      <Accordion.Content className="overflow-hidden pt-2 space-y-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
         {children}
       </Accordion.Content>
     </Accordion.Item>

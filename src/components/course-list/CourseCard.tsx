@@ -104,7 +104,7 @@ export function CourseCard({
       {/* クイック追加ボタン（モバイル: 常時表示、デスクトップ: ホバー時表示） */}
       {onQuickAdd && !isPlaced && (
         <button
-          className="absolute right-2 bottom-2 block sm:hidden sm:group-hover:block rounded-full bg-zen-600 text-white p-1 shadow-sm hover:bg-zen-700 transition-colors"
+          className="absolute right-2 bottom-2 block group-hover:flex items-center justify-center rounded-full bg-zen-600 text-white p-1 shadow-sm hover:bg-zen-700 transition-colors sm:opacity-0 sm:group-hover:opacity-100"
           onClick={e => {
             e.stopPropagation()
             onQuickAdd(course)

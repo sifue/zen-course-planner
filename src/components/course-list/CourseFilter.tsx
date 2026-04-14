@@ -1,5 +1,6 @@
-import { Search, X, Filter } from 'lucide-react'
+import { Search, X, Filter, ChevronDown } from 'lucide-react'
 import * as Toggle from '@radix-ui/react-toggle'
+import * as Accordion from '@radix-ui/react-accordion'
 import { clsx } from 'clsx'
 import type { UseFiltersReturn } from '@/hooks/useFilters'
 import { Button } from '@/components/ui/Button'
@@ -38,35 +39,62 @@ const FOUNDATION_GROUP_OPTIONS = [
   { value: 'digital_industry' as const, label: 'デジタル産業', color: 'bg-pink-100 text-pink-800 data-[state=on]:bg-pink-600 data-[state=on]:text-white data-[state=on]:border-pink-600' },
 ]
 
+/** アコーディオンのセクションヘッダー */
+function SectionHeader({
+  label,
+  activeCount,
+}: {
+  label: string
+  activeCount: number
+}) {
+  return (
+    <div className="flex items-center gap-1.5 min-w-0">
+      <span className="text-xs font-medium text-gray-600">{label}</span>
+      {activeCount > 0 && (
+        <span className="inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full bg-zen-600 text-white text-[10px] font-bold leading-none">
+          {activeCount}
+        </span>
+      )}
+    </div>
+  )
+}
+
 export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilterProps) {
   const hasActiveFilters = filters.activeFilterCount > 0
 
+  // 各セクションのアクティブフィルター数
+  const categoryActiveCount = CATEGORY_OPTIONS.filter(o => filters.filters.categories.has(o.value)).length
+  const foundationActiveCount = FOUNDATION_GROUP_OPTIONS.filter(o => filters.filters.categories.has(o.value)).length
+  const teachingMethodActiveCount = filters.filters.teachingMethods.size
+
   return (
-    <div className="space-y-3 px-3 py-3 border-b border-gray-100">
+    <div className="space-y-0 border-b border-gray-100">
       {/* テキスト検索 */}
-      <div className="relative">
-        <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 pointer-events-none" />
-        <input
-          type="search"
-          placeholder="科目名・タグで検索..."
-          value={filters.filters.searchText}
-          onChange={e => filters.setSearchText(e.target.value)}
-          className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-9 pr-8 text-sm focus:border-zen-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-zen-500"
-          aria-label="科目を検索"
-        />
-        {filters.filters.searchText && (
-          <button
-            onClick={() => filters.setSearchText('')}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-gray-400 hover:text-gray-600"
-            aria-label="検索をクリア"
-          >
-            <X className="h-3.5 w-3.5" />
-          </button>
-        )}
+      <div className="px-3 pt-3 pb-2">
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 pointer-events-none" />
+          <input
+            type="search"
+            placeholder="科目名・タグで検索..."
+            value={filters.filters.searchText}
+            onChange={e => filters.setSearchText(e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-9 pr-8 text-sm focus:border-zen-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-zen-500"
+            aria-label="科目を検索"
+          />
+          {filters.filters.searchText && (
+            <button
+              onClick={() => filters.setSearchText('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-gray-400 hover:text-gray-600"
+              aria-label="検索をクリア"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* 年次フィルター */}
-      <div>
+      {/* 年次フィルター（常時表示） */}
+      <div className="px-3 pb-2">
         <p className="mb-1.5 text-xs font-medium text-gray-500">履修想定年次</p>
         <div className="flex flex-wrap gap-1.5">
           {YEAR_OPTIONS.map(({ value, label }) => (
@@ -88,90 +116,118 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
         </div>
       </div>
 
-      {/* 分類フィルター */}
-      <div>
-        <p className="mb-1.5 text-xs font-medium text-gray-500">分類</p>
-        <div className="flex flex-wrap gap-1.5">
-          {CATEGORY_OPTIONS.map(({ value, label, color }) => (
-            <Toggle.Root
-              key={value}
-              pressed={filters.filters.categories.has(value)}
-              onPressedChange={() => filters.toggleCategory(value)}
-              className={clsx('filter-toggle border', color)}
-              aria-label={`${label}でフィルター`}
-            >
-              {label}
-            </Toggle.Root>
-          ))}
-        </div>
-      </div>
+      {/* アコーディオン：分類 / 基礎科目分野 / 授業方法 */}
+      <Accordion.Root
+        type="multiple"
+        defaultValue={['categories', 'foundation', 'teachingMethod']}
+        className="divide-y divide-gray-100"
+      >
+        {/* 分類フィルター */}
+        <Accordion.Item value="categories">
+          <Accordion.Header>
+            <Accordion.Trigger className="group flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
+              <SectionHeader label="分類" activeCount={categoryActiveCount} />
+              <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <div className="flex flex-wrap gap-1.5 px-3 pb-2.5">
+              {CATEGORY_OPTIONS.map(({ value, label, color }) => (
+                <Toggle.Root
+                  key={value}
+                  pressed={filters.filters.categories.has(value)}
+                  onPressedChange={() => filters.toggleCategory(value)}
+                  className={clsx('filter-toggle border', color)}
+                  aria-label={`${label}でフィルター`}
+                >
+                  {label}
+                </Toggle.Root>
+              ))}
+            </div>
+          </Accordion.Content>
+        </Accordion.Item>
 
-      {/* 基礎科目分野フィルター */}
-      <div>
-        <p className="mb-1.5 text-xs font-medium text-gray-500">基礎科目分野</p>
-        <div className="flex flex-wrap gap-1.5">
-          {FOUNDATION_GROUP_OPTIONS.map(({ value, label, color }) => (
-            <Toggle.Root
-              key={value}
-              pressed={filters.filters.categories.has(value)}
-              onPressedChange={() => filters.toggleCategory(value)}
-              className={clsx('filter-toggle border', color)}
-              aria-label={`${label}でフィルター`}
-            >
-              {label}
-            </Toggle.Root>
-          ))}
-        </div>
-      </div>
+        {/* 基礎科目分野フィルター */}
+        <Accordion.Item value="foundation">
+          <Accordion.Header>
+            <Accordion.Trigger className="group flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
+              <SectionHeader label="基礎科目分野" activeCount={foundationActiveCount} />
+              <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <div className="flex flex-wrap gap-1.5 px-3 pb-2.5">
+              {FOUNDATION_GROUP_OPTIONS.map(({ value, label, color }) => (
+                <Toggle.Root
+                  key={value}
+                  pressed={filters.filters.categories.has(value)}
+                  onPressedChange={() => filters.toggleCategory(value)}
+                  className={clsx('filter-toggle border', color)}
+                  aria-label={`${label}でフィルター`}
+                >
+                  {label}
+                </Toggle.Root>
+              ))}
+            </div>
+          </Accordion.Content>
+        </Accordion.Item>
 
-      {/* 授業方法フィルター */}
-      <div>
-        <p className="mb-1.5 text-xs font-medium text-gray-500">授業方法</p>
-        <div className="flex flex-wrap gap-1.5">
-          <Toggle.Root
-            pressed={filters.filters.teachingMethods.has('on_demand')}
-            onPressedChange={() => filters.toggleTeachingMethods(['on_demand'])}
-            className={clsx(
-              'filter-toggle border',
-              filters.filters.teachingMethods.has('on_demand')
-                ? 'bg-sky-600 text-white border-sky-600'
-                : 'bg-white text-gray-600 border-gray-300 hover:border-sky-400 hover:text-sky-600'
-            )}
-            aria-label="オンデマンド科目でフィルター"
-          >
-            📹 オンデマンド
-          </Toggle.Root>
-          <Toggle.Root
-            pressed={filters.filters.teachingMethods.has('live')}
-            onPressedChange={() => filters.toggleTeachingMethods(['live'])}
-            className={clsx(
-              'filter-toggle border',
-              filters.filters.teachingMethods.has('live')
-                ? 'bg-rose-600 text-white border-rose-600'
-                : 'bg-white text-gray-600 border-gray-300 hover:border-rose-400 hover:text-rose-600'
-            )}
-            aria-label="ライブ授業でフィルター"
-          >
-            📡 ライブ授業
-          </Toggle.Root>
-          <Toggle.Root
-            pressed={filters.filters.teachingMethods.has('seminar') && filters.filters.teachingMethods.has('zemi')}
-            onPressedChange={() => filters.toggleTeachingMethods(['seminar', 'zemi'])}
-            className={clsx(
-              'filter-toggle border',
-              filters.filters.teachingMethods.has('seminar') || filters.filters.teachingMethods.has('zemi')
-                ? 'bg-emerald-600 text-white border-emerald-600'
-                : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400 hover:text-emerald-600'
-            )}
-            aria-label="ゼミ・演習でフィルター"
-          >
-            🏫 ゼミ・演習
-          </Toggle.Root>
-        </div>
-      </div>
+        {/* 授業方法フィルター */}
+        <Accordion.Item value="teachingMethod">
+          <Accordion.Header>
+            <Accordion.Trigger className="group flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
+              <SectionHeader label="授業方法" activeCount={teachingMethodActiveCount} />
+              <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <div className="flex flex-wrap gap-1.5 px-3 pb-2.5">
+              <Toggle.Root
+                pressed={filters.filters.teachingMethods.has('on_demand')}
+                onPressedChange={() => filters.toggleTeachingMethods(['on_demand'])}
+                className={clsx(
+                  'filter-toggle border',
+                  filters.filters.teachingMethods.has('on_demand')
+                    ? 'bg-sky-600 text-white border-sky-600'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-sky-400 hover:text-sky-600'
+                )}
+                aria-label="オンデマンド科目でフィルター"
+              >
+                📹 オンデマンド
+              </Toggle.Root>
+              <Toggle.Root
+                pressed={filters.filters.teachingMethods.has('live')}
+                onPressedChange={() => filters.toggleTeachingMethods(['live'])}
+                className={clsx(
+                  'filter-toggle border',
+                  filters.filters.teachingMethods.has('live')
+                    ? 'bg-rose-600 text-white border-rose-600'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-rose-400 hover:text-rose-600'
+                )}
+                aria-label="ライブ授業でフィルター"
+              >
+                📡 ライブ授業
+              </Toggle.Root>
+              <Toggle.Root
+                pressed={filters.filters.teachingMethods.has('seminar') && filters.filters.teachingMethods.has('zemi')}
+                onPressedChange={() => filters.toggleTeachingMethods(['seminar', 'zemi'])}
+                className={clsx(
+                  'filter-toggle border',
+                  filters.filters.teachingMethods.has('seminar') || filters.filters.teachingMethods.has('zemi')
+                    ? 'bg-emerald-600 text-white border-emerald-600'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400 hover:text-emerald-600'
+                )}
+                aria-label="ゼミ・演習でフィルター"
+              >
+                🏫 ゼミ・演習
+              </Toggle.Root>
+            </div>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
 
       {/* 未配置のみ */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-3 py-2">
         <Toggle.Root
           pressed={filters.filters.showUnplannedOnly}
           onPressedChange={filters.toggleShowUnplannedOnly}

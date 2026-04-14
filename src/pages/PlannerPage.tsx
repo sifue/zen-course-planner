@@ -165,6 +165,7 @@ export default function PlannerPage() {
             placedCourseIds={placedCourseIds}
             warningCourseIds={prerequisites.warningCourseIds}
             errorCourseIds={prerequisites.errorCourseIds}
+            maxYears={plan.maxYears}
             onAddCourse={addCourse}
             onRemoveCourse={removeCourse}
           />

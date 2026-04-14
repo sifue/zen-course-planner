@@ -4,6 +4,7 @@ import type { Course } from '@/types/course'
 import { CourseCard } from './CourseCard'
 import { CourseFilter } from './CourseFilter'
 import { CourseDetail } from './CourseDetail'
+import { QuickAddDialog } from './QuickAddDialog'
 import type { UseFiltersReturn } from '@/hooks/useFilters'
 
 interface CourseListProps {
@@ -12,6 +13,7 @@ interface CourseListProps {
   placedCourseIds: Set<string>
   warningCourseIds: Set<string>
   errorCourseIds: Set<string>
+  maxYears: number
   onAddCourse: (courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => void
   onRemoveCourse: (courseId: string) => void
 }
@@ -25,10 +27,13 @@ export function CourseList({
   placedCourseIds,
   warningCourseIds,
   errorCourseIds,
+  maxYears,
   onAddCourse,
   onRemoveCourse,
 }: CourseListProps) {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
+  const [quickAddCourse, setQuickAddCourse] = useState<Course | null>(null)
+  const [quickAddDialogOpen, setQuickAddDialogOpen] = useState(false)
 
   // フィルタリング済みの科目リスト
   const filteredCourses = filters.filterCourses(courses, placedCourseIds)
@@ -44,6 +49,11 @@ export function CourseList({
 
   const handleCourseClick = (course: Course) => {
     setSelectedCourse(prev => prev?.id === course.id ? null : course)
+  }
+
+  const handleQuickAdd = (course: Course) => {
+    setQuickAddCourse(course)
+    setQuickAddDialogOpen(true)
   }
 
   return (
@@ -100,7 +110,7 @@ export function CourseList({
                       hasWarning={warningCourseIds.has(course.id)}
                       hasError={errorCourseIds.has(course.id)}
                       onClick={handleCourseClick}
-                      onQuickAdd={course => onAddCourse(course.id, course.year, course.quarters[0] as 1 | 2 | 3 | 4 ?? 1)}
+                      onQuickAdd={handleQuickAdd}
                     />
                   </div>
                 </div>
@@ -120,6 +130,15 @@ export function CourseList({
           onRemove={onRemoveCourse}
         />
       )}
+
+      {/* クイック追加ダイアログ */}
+      <QuickAddDialog
+        course={quickAddCourse}
+        open={quickAddDialogOpen}
+        onOpenChange={setQuickAddDialogOpen}
+        maxYears={maxYears}
+        onAdd={onAddCourse}
+      />
     </div>
   )
 }
