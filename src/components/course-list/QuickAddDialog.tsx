@@ -71,54 +71,59 @@ export function QuickAddDialog({ course, open, onOpenChange, maxYears, onAdd }: 
               <table className="w-full text-xs border-collapse">
                 <thead>
                   <tr>
-                    <th className="w-14 pb-1.5 text-left text-gray-400 font-normal pl-1"></th>
-                    {quarters.map(q => (
-                      <th key={q} className="pb-1.5 text-center text-gray-400 font-normal">
-                        {q}Q
+                    <th className="w-8 pb-1.5 text-left text-gray-400 font-normal pl-1"></th>
+                    {years.map(year => (
+                      <th key={year} className={clsx(
+                        'pb-1.5 text-center font-normal min-w-[3rem]',
+                        year === course.year ? 'text-zen-700 font-medium' : 'text-gray-400'
+                      )}>
+                        {year}年
+                        {year === course.year && (
+                          <span className="block text-[9px] text-zen-500 leading-tight">推奨</span>
+                        )}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {years.map(year => (
-                    <tr key={year}>
-                      <td className="py-0.5 pr-2 pl-1">
-                        <span className={clsx(
-                          'text-xs font-medium',
-                          year === course.year ? 'text-zen-700' : 'text-gray-400'
-                        )}>
-                          {year}年次
-                          {year === course.year && (
-                            <span className="ml-0.5 text-[9px] text-zen-500">推奨</span>
-                          )}
-                        </span>
-                      </td>
-                      {quarters.map(q => {
-                        const available = isQuarterAvailable(q)
-                        const isRecommended = year === course.year && q === (course.quarters[0] as 1 | 2 | 3 | 4)
-                        return (
-                          <td key={q} className="py-0.5 px-0.5 text-center">
-                            <button
-                              onClick={() => handleSelect(year, q)}
-                              disabled={!available}
-                              className={clsx(
-                                'h-9 w-full rounded-lg border text-xs font-medium transition-colors',
-                                available
-                                  ? isRecommended
-                                    ? 'border-zen-400 bg-zen-50 text-zen-700 hover:bg-zen-100 hover:border-zen-500'
-                                    : 'border-gray-200 bg-white text-gray-700 hover:bg-zen-50 hover:border-zen-400 hover:text-zen-700'
-                                  : 'border-gray-100 bg-gray-50 text-gray-300 cursor-not-allowed'
-                              )}
-                              aria-label={`${year}年次${q}Qに追加${!available ? '（この時期には開講なし）' : ''}`}
-                              aria-disabled={!available}
-                            >
-                              {available ? '追加' : '—'}
-                            </button>
-                          </td>
-                        )
-                      })}
-                    </tr>
-                  ))}
+                  {quarters.map(q => {
+                    const available = isQuarterAvailable(q)
+                    return (
+                      <tr key={q}>
+                        <td className="py-0.5 pr-1 pl-1">
+                          <span className={clsx(
+                            'font-medium',
+                            available ? 'text-gray-600' : 'text-gray-300'
+                          )}>
+                            {q}Q
+                          </span>
+                        </td>
+                        {years.map(year => {
+                          const isRecommended = year === course.year && q === (course.quarters[0] as 1 | 2 | 3 | 4)
+                          return (
+                            <td key={year} className="py-0.5 px-0.5 text-center">
+                              <button
+                                onClick={() => handleSelect(year, q)}
+                                disabled={!available}
+                                className={clsx(
+                                  'h-9 w-full rounded-lg border text-xs font-medium transition-colors',
+                                  available
+                                    ? isRecommended
+                                      ? 'border-zen-400 bg-zen-50 text-zen-700 hover:bg-zen-100 hover:border-zen-500'
+                                      : 'border-gray-200 bg-white text-gray-700 hover:bg-zen-50 hover:border-zen-400 hover:text-zen-700'
+                                    : 'border-gray-100 bg-gray-50 text-gray-300 cursor-not-allowed'
+                                )}
+                                aria-label={`${year}年次${q}Qに追加${!available ? '（この時期には開講なし）' : ''}`}
+                                aria-disabled={!available}
+                              >
+                                {available ? '追加' : '—'}
+                              </button>
+                            </td>
+                          )
+                        })}
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
