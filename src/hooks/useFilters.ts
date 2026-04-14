@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react'
-import type { Course, TeachingMethod } from '@/types/course'
+import type { Course, FoundationGroup, TeachingMethod } from '@/types/course'
 import type { FilterState, CategoryFilterKey } from '@/types/filters'
 import { DEFAULT_FILTER_STATE } from '@/types/filters'
 
@@ -112,6 +112,8 @@ export function useFilters(): UseFiltersReturn {
           if (category === course.band) { matches = true; break }
           // 展開科目系統で絞り込み
           if (course.band === 'expansion' && course.expansionTrack === category) { matches = true; break }
+          // 基礎科目分野で絞り込み（foundationGroups配列にカテゴリが含まれるか）
+          if (course.foundationGroups.includes(category as FoundationGroup)) { matches = true; break }
           // 多言語情報理解: 展開科目系統 + 基礎科目の多言語ITコミュニケーショングループを統合
           if (
             category === 'multilingual_information_understanding' &&

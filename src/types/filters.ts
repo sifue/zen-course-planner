@@ -1,9 +1,10 @@
-import type { BandCode, ExpansionTrack, TeachingMethod } from './course'
+import type { BandCode, ExpansionTrack, FoundationGroup, TeachingMethod } from './course'
 
-/** 分類フィルターのオプション（バンド + 展開科目系統 + 特殊フラグを統合） */
+/** 分類フィルターのオプション（バンド + 展開科目系統 + 基礎科目分野 + 特殊フラグを統合） */
 export type CategoryFilterKey =
   | BandCode
   | ExpansionTrack
+  | FoundationGroup       // 基礎科目の分野別フィルター（数理・情報・文化思想など）
   | 'digital_industry'    // デジタル産業史4科目（isDigitalIndustryHistoryEligible）
 
 /** フィルター状態 */

@@ -24,9 +24,18 @@ const CATEGORY_OPTIONS = [
   { value: 'multilingual_information_understanding' as const, label: '多言語情報理解', color: 'bg-cyan-100 text-cyan-800 data-[state=on]:bg-cyan-600 data-[state=on]:text-white data-[state=on]:border-cyan-600' },
   { value: 'world_understanding' as const, label: '世界理解', color: 'bg-amber-100 text-amber-800 data-[state=on]:bg-amber-600 data-[state=on]:text-white data-[state=on]:border-amber-600' },
   { value: 'social_connection' as const, label: '社会接続', color: 'bg-orange-100 text-orange-800 data-[state=on]:bg-orange-600 data-[state=on]:text-white data-[state=on]:border-orange-600' },
-  { value: 'digital_industry' as const, label: 'デジタル産業', color: 'bg-pink-100 text-pink-800 data-[state=on]:bg-pink-600 data-[state=on]:text-white data-[state=on]:border-pink-600' },
   { value: 'graduation_project' as const, label: '卒業プロジェクト', color: 'bg-red-100 text-red-800 data-[state=on]:bg-red-600 data-[state=on]:text-white data-[state=on]:border-red-600' },
   { value: 'free' as const, label: '自由', color: 'bg-gray-100 text-gray-600 data-[state=on]:bg-gray-500 data-[state=on]:text-white data-[state=on]:border-gray-500' },
+]
+
+/** 基礎科目分野フィルター（数理・情報・文化思想・社会・デジタル産業） */
+const FOUNDATION_GROUP_OPTIONS = [
+  { value: 'mathematics' as const, label: '数理', color: 'bg-teal-100 text-teal-800 data-[state=on]:bg-teal-600 data-[state=on]:text-white data-[state=on]:border-teal-600' },
+  { value: 'information' as const, label: '情報', color: 'bg-sky-100 text-sky-800 data-[state=on]:bg-sky-600 data-[state=on]:text-white data-[state=on]:border-sky-600' },
+  { value: 'culture_thought' as const, label: '文化・思想', color: 'bg-purple-100 text-purple-800 data-[state=on]:bg-purple-600 data-[state=on]:text-white data-[state=on]:border-purple-600' },
+  { value: 'society_network' as const, label: '社会・ネットワーク', color: 'bg-yellow-100 text-yellow-800 data-[state=on]:bg-yellow-600 data-[state=on]:text-white data-[state=on]:border-yellow-600' },
+  { value: 'economy_market' as const, label: '経済・マーケット', color: 'bg-lime-100 text-lime-800 data-[state=on]:bg-lime-600 data-[state=on]:text-white data-[state=on]:border-lime-600' },
+  { value: 'digital_industry' as const, label: 'デジタル産業', color: 'bg-pink-100 text-pink-800 data-[state=on]:bg-pink-600 data-[state=on]:text-white data-[state=on]:border-pink-600' },
 ]
 
 export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilterProps) {
@@ -84,6 +93,24 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
         <p className="mb-1.5 text-xs font-medium text-gray-500">分類</p>
         <div className="flex flex-wrap gap-1.5">
           {CATEGORY_OPTIONS.map(({ value, label, color }) => (
+            <Toggle.Root
+              key={value}
+              pressed={filters.filters.categories.has(value)}
+              onPressedChange={() => filters.toggleCategory(value)}
+              className={clsx('filter-toggle border', color)}
+              aria-label={`${label}でフィルター`}
+            >
+              {label}
+            </Toggle.Root>
+          ))}
+        </div>
+      </div>
+
+      {/* 基礎科目分野フィルター */}
+      <div>
+        <p className="mb-1.5 text-xs font-medium text-gray-500">基礎科目分野</p>
+        <div className="flex flex-wrap gap-1.5">
+          {FOUNDATION_GROUP_OPTIONS.map(({ value, label, color }) => (
             <Toggle.Root
               key={value}
               pressed={filters.filters.categories.has(value)}
