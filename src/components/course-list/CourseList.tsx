@@ -38,12 +38,13 @@ export function CourseList({
   // フィルタリング済みの科目リスト
   const filteredCourses = filters.filterCourses(courses, placedCourseIds)
 
-  // 仮想スクロールの設定
+  // 仮想スクロールの設定（動的高さ計測対応）
   const listRef = useRef<HTMLDivElement>(null)
   const rowVirtualizer = useVirtualizer({
     count: filteredCourses.length,
     getScrollElement: () => listRef.current,
-    estimateSize: () => 72, // 科目カードの推定高さ
+    estimateSize: () => 72, // 科目カードの推定高さ（初期値）
+    measureElement: el => el.getBoundingClientRect().height,
     overscan: 5,
   })
 
@@ -93,12 +94,13 @@ export function CourseList({
               return (
                 <div
                   key={course.id}
+                  data-index={virtualItem.index}
+                  ref={rowVirtualizer.measureElement}
                   style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: `${virtualItem.size}px`,
                     transform: `translateY(${virtualItem.start}px)`,
                   }}
                   role="listitem"
