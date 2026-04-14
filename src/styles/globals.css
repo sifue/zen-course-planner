@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+  }
+
+  /* スクロールバーのスタイリング */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
+
+@layer components {
+  /* ドラッグ中のカーソルスタイル */
+  .dragging {
+    cursor: grabbing !important;
+  }
+
+  /* ドロップゾーンのハイライト */
+  .drop-zone-active {
+    @apply ring-2 ring-zen-400 ring-offset-1 bg-zen-50;
+  }
+
+  /* 科目カードのベーススタイル */
+  .course-card {
+    @apply rounded-lg border bg-white shadow-sm transition-all duration-150;
+  }
+
+  .course-card:hover {
+    @apply shadow-md -translate-y-0.5;
+  }
+
+  /* フィルタートグルボタン */
+  .filter-toggle {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium
+           border transition-colors duration-150 cursor-pointer select-none;
+  }
+
+  .filter-toggle[data-state="on"] {
+    @apply bg-zen-600 text-white border-zen-600;
+  }
+
+  .filter-toggle[data-state="off"] {
+    @apply bg-white text-gray-600 border-gray-300 hover:border-zen-400 hover:text-zen-600;
+  }
+}
