@@ -125,7 +125,7 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
         {/* 分類フィルター */}
         <Accordion.Item value="categories">
           <Accordion.Header>
-            <Accordion.Trigger className="group flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
+            <Accordion.Trigger className="group flex w-full cursor-pointer items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
               <SectionHeader label="分類" activeCount={categoryActiveCount} />
               <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
             </Accordion.Trigger>
@@ -150,7 +150,7 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
         {/* 基礎科目分野フィルター */}
         <Accordion.Item value="foundation">
           <Accordion.Header>
-            <Accordion.Trigger className="group flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
+            <Accordion.Trigger className="group flex w-full cursor-pointer items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
               <SectionHeader label="基礎科目分野" activeCount={foundationActiveCount} />
               <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
             </Accordion.Trigger>
@@ -175,7 +175,7 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
         {/* 授業方法フィルター */}
         <Accordion.Item value="teachingMethod">
           <Accordion.Header>
-            <Accordion.Trigger className="group flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
+            <Accordion.Trigger className="group flex w-full cursor-pointer items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
               <SectionHeader label="授業方法" activeCount={teachingMethodActiveCount} />
               <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
             </Accordion.Trigger>
