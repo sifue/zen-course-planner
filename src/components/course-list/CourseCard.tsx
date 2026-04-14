@@ -43,8 +43,12 @@ export function CourseCard({
         isPlaced && 'opacity-60',
         hasError && 'ring-1 ring-red-300',
         hasWarning && !hasError && 'ring-1 ring-amber-300',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zen-500 focus-visible:ring-offset-1'
       )}
+      role="button"
+      tabIndex={0}
       onClick={() => onClick(course)}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(course) } }}
       aria-label={`${course.name}（${course.credits}単位）`}
     >
       {/* ドラッグハンドル */}
