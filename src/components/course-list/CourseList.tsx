@@ -57,6 +57,12 @@ export function CourseList({
     setQuickAddDialogOpen(true)
   }
 
+  const handleAddFromDialog = (courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => {
+    onAddCourse(courseId, year, quarter)
+    // 追加後は詳細パネルを閉じる（配置済みになったのでリストからも消える可能性あり）
+    setSelectedCourse(null)
+  }
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* フィルターパネル */}
@@ -140,7 +146,7 @@ export function CourseList({
         open={quickAddDialogOpen}
         onOpenChange={setQuickAddDialogOpen}
         maxYears={maxYears}
-        onAdd={onAddCourse}
+        onAdd={handleAddFromDialog}
       />
     </div>
   )
