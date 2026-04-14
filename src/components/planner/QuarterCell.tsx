@@ -81,8 +81,11 @@ export function QuarterCell({
     >
       {/* 単位数表示 */}
       {totalCredits > 0 && (
-        <div className="absolute right-1.5 top-1 text-xs text-gray-400">
-          {totalCredits}単位
+        <div className={clsx(
+          'absolute right-1.5 top-1 text-xs',
+          totalCredits > 10 ? 'text-amber-500 font-medium' : 'text-gray-400'
+        )}>
+          {totalCredits}単位{totalCredits > 10 && '⚠'}
         </div>
       )}
 

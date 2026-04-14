@@ -8,6 +8,8 @@ interface AppLayoutProps {
   sidebar: ReactNode
   main: ReactNode
   panel: ReactNode
+  /** 卒業要件チェック結果（モバイルタブバーのバッジ表示用） */
+  isGraduationOk?: boolean
 }
 
 type MobileTab = 'sidebar' | 'main' | 'panel'
@@ -25,7 +27,7 @@ const MOBILE_TABS: { id: MobileTab; label: string; icon: React.ElementType }[] =
  * タブレット（md-lg）: 左サイドバー | メイン の2ペイン
  * スマホ（< md）: 下タブバーで3エリアを切り替え
  */
-export function AppLayout({ header, sidebar, main, panel }: AppLayoutProps) {
+export function AppLayout({ header, sidebar, main, panel, isGraduationOk }: AppLayoutProps) {
   const [activeMobileTab, setActiveMobileTab] = useState<MobileTab>('main')
 
   return (
@@ -86,7 +88,7 @@ export function AppLayout({ header, sidebar, main, panel }: AppLayoutProps) {
             key={id}
             onClick={() => setActiveMobileTab(id)}
             className={clsx(
-              'flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-xs transition-colors',
+              'relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-xs transition-colors',
               activeMobileTab === id
                 ? 'text-zen-600 font-medium'
                 : 'text-gray-400 hover:text-gray-600'
@@ -94,7 +96,16 @@ export function AppLayout({ header, sidebar, main, panel }: AppLayoutProps) {
             aria-label={label}
             aria-current={activeMobileTab === id ? 'page' : undefined}
           >
-            <Icon className={clsx('h-5 w-5', activeMobileTab === id && 'text-zen-600')} />
+            <div className="relative">
+              <Icon className={clsx('h-5 w-5', activeMobileTab === id && 'text-zen-600')} />
+              {/* 卒業要件タブのバッジ */}
+              {id === 'panel' && isGraduationOk !== undefined && (
+                <span className={clsx(
+                  'absolute -right-1 -top-1 h-2 w-2 rounded-full border border-white',
+                  isGraduationOk ? 'bg-emerald-500' : 'bg-red-400'
+                )} />
+              )}
+            </div>
             <span>{label}</span>
           </button>
         ))}

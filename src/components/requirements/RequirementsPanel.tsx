@@ -76,7 +76,7 @@ export function RequirementsPanel({
         </div>
 
         {/* アコーディオン（各カテゴリの詳細） */}
-        <Accordion.Root type="multiple" defaultValue={['introduction', 'foundation', 'expansion', 'graduation']}>
+        <Accordion.Root type="multiple" defaultValue={['introduction', 'foundation', 'expansion', 'graduation']} className="space-y-0">
           {/* 導入科目 */}
           <AccordionSection value="introduction" label="導入科目">
             <RequirementRow

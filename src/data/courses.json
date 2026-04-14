@@ -7806,39 +7806,6 @@
     "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2026-mth-2-c3-1200-010-c8a22ef098.md"
   },
   {
-    "id": "OPT-1-C1-1030-999",
-    "fileId": "485311abb9",
-    "syllabusUrl": "https://syllabus.zen.ac.jp/subjects/2026/OPT-1-C1-1030-999",
-    "fetchedAt": "2026-04-14T03:21:15.211Z",
-    "name": "「学生便覧」カリキュラム・マップを参照",
-    "credits": 2,
-    "year": 1,
-    "openYear": 2026,
-    "quarters": [
-      1,
-      3
-    ],
-    "teachingMethod": "on_demand",
-    "category": "elective",
-    "instructors": [
-      "順次公開予定"
-    ],
-    "tags": [],
-    "thumbnailUrl": "https://cdn.syllabus.zen.ac.jp/images/subjects/OPT-1-C1-1030-999.webp",
-    "videoUrl": "https://www.youtube.com/embed/2wqrYydAiGo",
-    "band": "expansion",
-    "foundationGroups": [],
-    "expansionTrack": "social_connection",
-    "countableToGraduation": true,
-    "isDigitalIndustryHistoryEligible": false,
-    "isRequiredProjectPractice": false,
-    "strongPrerequisites": [],
-    "recommendedPrerequisites": [],
-    "relatedCourses": [],
-    "overview": "順次公開予定",
-    "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2026-opt-1-c1-1030-999-485311abb9.md"
-  },
-  {
     "id": "OPT-1-D1-0204-003",
     "fileId": "1b9620364a",
     "syllabusUrl": "https://syllabus.zen.ac.jp/subjects/2026/OPT-1-D1-0204-003",
@@ -8044,39 +8011,6 @@
     ],
     "overview": "【ゲスト講師：絵葉ましろ】\nこの授業では代表的な構図手法と構図の良し悪しを学び、一枚絵の基本的な設計について考察する。併せてゲストより表現上のレクチャーを行う。ポップカルチャーに触れ、親しみながらデジタルツールの使用法とデジタルイラストの技法について学ぶ授業である。共有スピードが速くトレンドの変化が著しいデジタルイラストに関し、本学では知識を本質的なものとするため、手を動かし制作をすることで、身体感覚と思考を融合させる学修を行う。",
     "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2026-opt-1-d1-1030-002-f7cb0b65c9.md"
-  },
-  {
-    "id": "OPT-2-C1-1030-999",
-    "fileId": "cb3eaf4336",
-    "syllabusUrl": "https://syllabus.zen.ac.jp/subjects/2026/OPT-2-C1-1030-999",
-    "fetchedAt": "2026-04-14T03:21:15.212Z",
-    "name": "「学生便覧」カリキュラム・マップを参照",
-    "credits": 2,
-    "year": 2,
-    "openYear": 2026,
-    "quarters": [
-      1,
-      3
-    ],
-    "teachingMethod": "on_demand",
-    "category": "elective",
-    "instructors": [
-      "順次公開予定"
-    ],
-    "tags": [],
-    "thumbnailUrl": "https://cdn.syllabus.zen.ac.jp/images/subjects/OPT-2-C1-1030-999.webp",
-    "videoUrl": "https://www.youtube.com/embed/2wqrYydAiGo",
-    "band": "expansion",
-    "foundationGroups": [],
-    "expansionTrack": "social_connection",
-    "countableToGraduation": true,
-    "isDigitalIndustryHistoryEligible": false,
-    "isRequiredProjectPractice": false,
-    "strongPrerequisites": [],
-    "recommendedPrerequisites": [],
-    "relatedCourses": [],
-    "overview": "順次公開予定",
-    "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2026-opt-2-c1-1030-999-cb3eaf4336.md"
   },
   {
     "id": "OPT-2-D1-0204-004",
@@ -12925,39 +12859,6 @@
     "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2027-mth-3-c3-1200-015-4a54ea67ad.md"
   },
   {
-    "id": "OPT-3-C1-1030-999",
-    "fileId": "2794deec1d",
-    "syllabusUrl": "https://syllabus.zen.ac.jp/subjects/2027/OPT-3-C1-1030-999",
-    "fetchedAt": "2026-04-14T03:21:15.213Z",
-    "name": "「学生便覧」カリキュラム・マップを参照",
-    "credits": 2,
-    "year": 3,
-    "openYear": 2027,
-    "quarters": [
-      1,
-      3
-    ],
-    "teachingMethod": "on_demand",
-    "category": "elective",
-    "instructors": [
-      "順次公開予定"
-    ],
-    "tags": [],
-    "thumbnailUrl": "https://cdn.syllabus.zen.ac.jp/images/subjects/OPT-3-C1-1030-999.webp",
-    "videoUrl": "https://www.youtube.com/embed/2wqrYydAiGo",
-    "band": "expansion",
-    "foundationGroups": [],
-    "expansionTrack": "social_connection",
-    "countableToGraduation": true,
-    "isDigitalIndustryHistoryEligible": false,
-    "isRequiredProjectPractice": false,
-    "strongPrerequisites": [],
-    "recommendedPrerequisites": [],
-    "relatedCourses": [],
-    "overview": "順次公開予定",
-    "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2027-opt-3-c1-1030-999-2794deec1d.md"
-  },
-  {
     "id": "OPT-3-D1-0204-003",
     "fileId": "9665110c75",
     "syllabusUrl": "https://syllabus.zen.ac.jp/subjects/2027/OPT-3-D1-0204-003",
@@ -14549,39 +14450,6 @@
     ],
     "overview": "このゼミでは、量子計算や量子物理学に関連する事柄について、理論的な研究課題を設定し、課題に取り組み、その結果を発表するための基礎力を養成する。前半では、必要となる基礎知識を専門書や論文を批判的に読むことで身につける。後半では、教員との対話を通じて課題を設定し、進捗報告とフィードバックを繰り返し、課題解決を図る。最後に、得られた研究成果または身につけた専門知識を資料にまとめて、最終成果物とする。優れた成果は学会等の対外発表を行う。",
     "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2028-mth-4-c4-1234-008-dff421172c.md"
-  },
-  {
-    "id": "OPT-4-C1-1030-999",
-    "fileId": "d3bb5ec33c",
-    "syllabusUrl": "https://syllabus.zen.ac.jp/subjects/2028/OPT-4-C1-1030-999",
-    "fetchedAt": "2026-04-14T03:21:15.214Z",
-    "name": "「学生便覧」カリキュラム・マップを参照",
-    "credits": 2,
-    "year": 4,
-    "openYear": 2028,
-    "quarters": [
-      1,
-      3
-    ],
-    "teachingMethod": "on_demand",
-    "category": "elective",
-    "instructors": [
-      "順次公開予定"
-    ],
-    "tags": [],
-    "thumbnailUrl": "https://cdn.syllabus.zen.ac.jp/images/subjects/OPT-4-C1-1030-999.webp",
-    "videoUrl": "https://www.youtube.com/embed/2wqrYydAiGo",
-    "band": "expansion",
-    "foundationGroups": [],
-    "expansionTrack": "social_connection",
-    "countableToGraduation": true,
-    "isDigitalIndustryHistoryEligible": false,
-    "isRequiredProjectPractice": false,
-    "strongPrerequisites": [],
-    "recommendedPrerequisites": [],
-    "relatedCourses": [],
-    "overview": "順次公開予定",
-    "syllabusRawUrl": "/Users/soichiro_yoshimura/workspace/zen-course-planner/docs/syllabus/markdown/syllabus-zen-ac-jp-subjects-2028-opt-4-c1-1030-999-d3bb5ec33c.md"
   },
   {
     "id": "PRJ-4-A3-1234-001",

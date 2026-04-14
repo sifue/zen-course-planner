@@ -37,10 +37,21 @@ async function main() {
   const courseByName = new Map<string, string>() // 科目名 → ID（重複チェック用）
   const courseById = new Map<string, { course: ReturnType<typeof extractCourse>; openYear: number }>()
 
+  // ダミー・プレースホルダーとして判定する科目名パターン
+  const DUMMY_NAME_PATTERNS = [
+    '「学生便覧」カリキュラム・マップを参照',
+    'カリキュラム・マップを参照',
+  ]
+
   for (const file of files.sort()) {
     try {
       const course = extractCourse(file)
       if (!course) continue
+
+      // ダミー科目をスキップ
+      if (DUMMY_NAME_PATTERNS.some(p => course.name.includes(p))) {
+        continue
+      }
 
       // 同一ナンバリングの科目が複数ある場合は最新年度を優先
       const existingEntry = courseById.get(course.id)

@@ -15,6 +15,8 @@ interface CourseDetailModalProps {
   hasError?: boolean
   onAdd: (courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => void
   onRemove: (courseId: string) => void
+  /** 年次・Q選択ダイアログを開く（省略時はデフォルトの年次・Qに追加） */
+  onQuickAdd?: (course: Course) => void
 }
 
 /**
@@ -29,6 +31,7 @@ export function CourseDetailModal({
   hasError = false,
   onAdd,
   onRemove,
+  onQuickAdd,
 }: CourseDetailModalProps) {
   if (!course) return null
 
@@ -158,8 +161,13 @@ export function CourseDetailModal({
             variant="primary"
             size="sm"
             onClick={() => {
-              onAdd(course.id, course.year, (course.quarters[0] as 1 | 2 | 3 | 4) ?? 1)
-              onOpenChange(false)
+              if (onQuickAdd) {
+                onQuickAdd(course)
+                onOpenChange(false)
+              } else {
+                onAdd(course.id, course.year, (course.quarters[0] as 1 | 2 | 3 | 4) ?? 1)
+                onOpenChange(false)
+              }
             }}
             className="flex-1"
           >

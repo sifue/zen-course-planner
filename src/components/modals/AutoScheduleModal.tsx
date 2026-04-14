@@ -54,11 +54,20 @@ export function AutoScheduleModal({ open, onOpenChange, courses, onApply }: Auto
     onOpenChange(false)
   }
 
-  const totalCredits = preview
+  const previewStats = preview
     ? (() => {
         const courseMap: Record<string, Course> = {}
         for (const c of courses) courseMap[c.id] = c
-        return preview.reduce((sum, pc) => sum + (courseMap[pc.courseId]?.credits ?? 0), 0)
+        const totalCredits = preview.reduce((sum, pc) => sum + (courseMap[pc.courseId]?.credits ?? 0), 0)
+        // 年次別科目数・単位数
+        const byYear: Record<number, { count: number; credits: number }> = {}
+        for (const pc of preview) {
+          const cr = courseMap[pc.courseId]?.credits ?? 0
+          if (!byYear[pc.year]) byYear[pc.year] = { count: 0, credits: 0 }
+          byYear[pc.year].count++
+          byYear[pc.year].credits += cr
+        }
+        return { totalCredits, byYear }
       })()
     : null
 
@@ -113,12 +122,24 @@ export function AutoScheduleModal({ open, onOpenChange, courses, onApply }: Auto
         </div>
 
         {/* プレビュー結果 */}
-        {preview && (
-          <Alert variant="info">
-            <strong>{preview.length}科目</strong>を配置しました。
-            {totalCredits !== null && <span>（合計約{totalCredits}単位相当）</span>}
-            適用すると現在の計画が上書きされます。
-          </Alert>
+        {preview && previewStats && (
+          <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 space-y-2">
+            <p className="text-sm font-medium text-blue-800">
+              プレビュー: <strong>{preview.length}科目</strong>（合計約 <strong>{previewStats.totalCredits}単位</strong>）
+            </p>
+            <div className="grid grid-cols-4 gap-1.5 text-xs">
+              {Object.entries(previewStats.byYear).map(([year, { count, credits }]) => (
+                <div key={year} className="rounded bg-white border border-blue-100 px-2 py-1.5 text-center">
+                  <p className="font-semibold text-blue-700">{year}年次</p>
+                  <p className="text-gray-600">{count}科目</p>
+                  <p className="text-gray-400">{credits}単位</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-blue-600">
+              適用すると現在の計画が上書きされます。
+            </p>
+          </div>
         )}
 
         {/* ボタン */}

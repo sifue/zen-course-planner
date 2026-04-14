@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useCallback, useEffect, useRef, lazy, Suspense, useMemo } from 'react'
 import type { Course } from '@/types/course'
 import { usePlan } from '@/hooks/usePlan'
 import { useFilters } from '@/hooks/useFilters'
@@ -10,6 +10,7 @@ import { AppHeader } from '@/components/layout/AppHeader'
 import { CourseList } from '@/components/course-list/CourseList'
 import { PlannerGrid } from '@/components/planner/PlannerGrid'
 import { RequirementsPanel } from '@/components/requirements/RequirementsPanel'
+import { QuickAddDialog } from '@/components/course-list/QuickAddDialog'
 
 // 遅延ロードするモーダル
 const TutorialModal = lazy(() => import('@/components/modals/TutorialModal').then(m => ({ default: m.TutorialModal })))
@@ -35,6 +36,15 @@ for (const course of ALL_COURSES) {
 export default function PlannerPage() {
   // 状態管理
   const { plan, setPlan, setPlanName, addCourse, moveCourse, removeCourse, resetPlan, addYear, placedCourseIds, getPlanForSave } = usePlan()
+
+  // 科目ID→配置位置マップ（CourseListに渡して「X年次 YQ配置済み」を表示）
+  const placementMap = useMemo(() => {
+    const map = new Map<string, { year: number; quarter: number }>()
+    for (const pc of plan.plannedCourses) {
+      map.set(pc.courseId, { year: pc.year, quarter: pc.quarter })
+    }
+    return map
+  }, [plan.plannedCourses])
   const filters = useFilters()
   const storage = useStorage()
   const graduation = useGraduation(plan.plannedCourses, COURSE_MAP)
@@ -57,6 +67,10 @@ export default function PlannerPage() {
   // 科目詳細モーダル
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
   const [showCourseDetail, setShowCourseDetail] = useState(false)
+
+  // グリッドからのクイック追加ダイアログ
+  const [quickAddCourse, setQuickAddCourse] = useState<Course | null>(null)
+  const [showQuickAddDialog, setShowQuickAddDialog] = useState(false)
 
   // 保存フィードバック
   const [showSavedBadge, setShowSavedBadge] = useState(false)
@@ -104,6 +118,19 @@ export default function PlannerPage() {
     return () => clearTimeout(timer)
   }, [plan.plannedCourses, plan.maxYears, triggerSavedBadge])
 
+  // Ctrl+S / Cmd+S で即時保存
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault()
+        storageRef.current.savePlan(getPlanForSaveRef.current())
+        triggerSavedBadge()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [triggerSavedBadge])
+
   // ハンドラー
   const handleSave = useCallback(() => {
     storage.savePlan(getPlanForSave())
@@ -135,6 +162,11 @@ export default function PlannerPage() {
     setShowCourseDetail(true)
   }, [])
 
+  const handleQuickAddFromDetail = useCallback((course: Course) => {
+    setQuickAddCourse(course)
+    setShowQuickAddDialog(true)
+  }, [])
+
   const handleTutorialComplete = useCallback(() => {
     localStorage.setItem('zen_tutorial_completed', '1')
     setShowTutorial(false)
@@ -143,6 +175,7 @@ export default function PlannerPage() {
   return (
     <>
       <AppLayout
+        isGraduationOk={graduation.graduation.isEligible}
         header={
           <AppHeader
             planName={plan.name}
@@ -163,6 +196,7 @@ export default function PlannerPage() {
             courses={ALL_COURSES}
             filters={filters}
             placedCourseIds={placedCourseIds}
+            placementMap={placementMap}
             warningCourseIds={prerequisites.warningCourseIds}
             errorCourseIds={prerequisites.errorCourseIds}
             maxYears={plan.maxYears}
@@ -309,9 +343,22 @@ export default function PlannerPage() {
             hasError={prerequisites.errorCourseIds.has(selectedCourse.id)}
             onAdd={(courseId, year, quarter) => addCourse(courseId, year, quarter)}
             onRemove={(courseId) => removeCourse(courseId)}
+            onQuickAdd={handleQuickAddFromDetail}
           />
         )}
       </Suspense>
+
+      {/* グリッドからのクイック追加ダイアログ（Suspense外・常時マウント） */}
+      <QuickAddDialog
+        course={quickAddCourse}
+        open={showQuickAddDialog}
+        onOpenChange={setShowQuickAddDialog}
+        maxYears={plan.maxYears}
+        onAdd={(courseId, year, quarter) => {
+          addCourse(courseId, year, quarter)
+          setShowQuickAddDialog(false)
+        }}
+      />
     </>
   )
 }

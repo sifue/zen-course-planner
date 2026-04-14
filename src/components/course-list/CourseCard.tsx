@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/Badge'
 interface CourseCardProps {
   course: Course
   isPlaced: boolean
+  /** 配置済みの場合の年次・Q情報 */
+  placement?: { year: number; quarter: number }
   hasWarning?: boolean
   hasError?: boolean
   onClick: (course: Course) => void
@@ -21,6 +23,7 @@ interface CourseCardProps {
 export function CourseCard({
   course,
   isPlaced,
+  placement,
   hasWarning = false,
   hasError = false,
   onClick,
@@ -102,6 +105,13 @@ export function CourseCard({
           <span className="text-xs text-gray-400">
             {formatQuarters(course.quarters)}
           </span>
+
+          {/* 配置済み年次・Q表示 */}
+          {isPlaced && placement && (
+            <span className="text-xs text-zen-600 font-medium">
+              → {placement.year}年{placement.quarter}Q
+            </span>
+          )}
         </div>
       </div>
 

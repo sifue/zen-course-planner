@@ -192,6 +192,9 @@ export function checkGraduation(
   if (!digitalHistoryOk) {
     errors.push(`デジタル産業の指定4科目群が不足しています（${digitalHistoryCredits}/${REQUIRED.DIGITAL_INDUSTRY_HISTORY}単位）`)
   }
+  if (expansionCredits < REQUIRED.EXPANSION) {
+    errors.push(`展開科目が不足しています（${expansionCredits}/${REQUIRED.EXPANSION}単位）`)
+  }
   if (!graduationProjectOk) {
     if (!hasProjectPractice) {
       errors.push('卒業プロジェクト科目「プロジェクト実践」が必要です')

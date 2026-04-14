@@ -64,7 +64,7 @@ export interface UseStorageReturn {
   /** プランIDの表示名を取得する */
   getPlanName: (planId: string) => string
   /** 全プランのリスト */
-  getAllPlans: () => Array<{ id: string; name: string; updatedAt: string }>
+  getAllPlans: () => Array<{ id: string; name: string; updatedAt: string; plannedCoursesCount: number }>
 }
 
 export function useStorage(): UseStorageReturn {
@@ -146,7 +146,7 @@ export function useStorage(): UseStorageReturn {
 
   const getAllPlans = useCallback(() => {
     return Object.values(storage.plans)
-      .map(p => ({ id: p.id, name: p.name, updatedAt: p.updatedAt }))
+      .map(p => ({ id: p.id, name: p.name, updatedAt: p.updatedAt, plannedCoursesCount: p.plannedCourses.length }))
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
   }, [storage.plans])
 

@@ -106,7 +106,7 @@ export function PlannerGrid({
       onDragEnd={handleDragEnd}
     >
       <div className="h-full overflow-x-auto overflow-y-auto">
-        <div className="flex gap-4 p-4 min-w-max">
+        <div className="flex gap-4 p-4 min-w-max" role="grid" aria-label="履修計画グリッド">
           {/* 各年次の列 */}
           {Array.from({ length: plan.maxYears }, (_, i) => i + 1).map(year => (
             <YearColumn

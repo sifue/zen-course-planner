@@ -48,10 +48,15 @@ export function Modal({
         >
           {/* ヘッダー */}
           <div className="flex items-center justify-between border-b px-6 py-4">
-            <div>
-              <Dialog.Title className="text-lg font-semibold text-gray-900">
-                {title}
-              </Dialog.Title>
+            <div className="min-w-0">
+              {title ? (
+                <Dialog.Title className="text-lg font-semibold text-gray-900">
+                  {title}
+                </Dialog.Title>
+              ) : (
+                // アクセシビリティのためにスクリーンリーダー向けのみ出力
+                <Dialog.Title className="sr-only">ダイアログ</Dialog.Title>
+              )}
               {description && (
                 <Dialog.Description className="mt-1 text-sm text-gray-500">
                   {description}

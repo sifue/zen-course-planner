@@ -135,7 +135,7 @@ export function AppHeader({
         {/* 操作ボタン群 */}
         <div className="flex items-center gap-1.5 flex-wrap justify-end">
           {/* 保存 */}
-          <Button variant="primary" size="sm" onClick={onSave} aria-label="計画を保存">
+          <Button variant="primary" size="sm" onClick={onSave} aria-label="計画を保存（Ctrl+S）" title="保存（Ctrl+S）">
             <Save className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">保存</span>
           </Button>

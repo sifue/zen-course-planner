@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { GraduationCap, LayoutGrid, Sliders, CheckSquare, Download, Zap, MessageSquare, AlertTriangle } from 'lucide-react'
+import { GraduationCap, LayoutGrid, Sliders, CheckSquare, Download, Zap, MessageSquare, AlertTriangle, Keyboard } from 'lucide-react'
 
 function Section({ icon: Icon, title, children }: { icon: React.ElementType; title: string; children: React.ReactNode }) {
   return (
@@ -133,6 +133,41 @@ export default function HelpPage() {
               ヘッダーの「エクスポート」ボタンでMarkdown形式のデータを出力・保存できます。
               「インポート」ボタンでそのデータを読み込むことで、別の端末でも計画を続けられます。
             </p>
+          </Section>
+
+          <Section icon={Keyboard} title="キーボードショートカット">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="py-1.5 pr-6 text-left font-medium text-gray-600 w-40">ショートカット</th>
+                  <th className="py-1.5 text-left font-medium text-gray-600">動作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-50">
+                  <td className="py-1.5 pr-6">
+                    <kbd className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">Ctrl+S</kbd>
+                    <span className="mx-1 text-gray-400">/</span>
+                    <kbd className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">⌘+S</kbd>
+                  </td>
+                  <td className="py-1.5 text-gray-600">履修計画を即時保存</td>
+                </tr>
+                <tr className="border-b border-gray-50">
+                  <td className="py-1.5 pr-6">
+                    <kbd className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">Enter</kbd>
+                    <span className="mx-1 text-gray-400">/</span>
+                    <kbd className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">Space</kbd>
+                  </td>
+                  <td className="py-1.5 text-gray-600">科目カードの選択（キーボードフォーカス時）</td>
+                </tr>
+                <tr>
+                  <td className="py-1.5 pr-6">
+                    <kbd className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">Esc</kbd>
+                  </td>
+                  <td className="py-1.5 text-gray-600">ダイアログ・モーダルを閉じる</td>
+                </tr>
+              </tbody>
+            </table>
           </Section>
 
           <Section icon={CheckSquare} title="卒業要件について">

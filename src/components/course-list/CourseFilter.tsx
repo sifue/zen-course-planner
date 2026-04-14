@@ -119,7 +119,7 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
       {/* アコーディオン：分類 / 基礎科目分野 / 授業方法 */}
       <Accordion.Root
         type="multiple"
-        defaultValue={['categories', 'foundation', 'teachingMethod']}
+        defaultValue={['categories']}
         className="divide-y divide-gray-100"
       >
         {/* 分類フィルター */}

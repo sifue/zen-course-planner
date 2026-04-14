@@ -139,10 +139,12 @@ export function autoSchedule(
 
   /**
    * 科目を開講Q制約を満たす最も早い年次・Qに配置する
+   * 開講Q情報がない場合は全Q許可として扱う
    */
   function placeAtEarliest(course: Course, fromYear: number = 1): boolean {
+    const quarters = course.quarters.length > 0 ? course.quarters : [1, 2, 3, 4]
     for (let year = fromYear; year <= maxYears; year++) {
-      for (const q of course.quarters) {
+      for (const q of quarters) {
         if (placeCourse(course, year, q)) return true
       }
     }
@@ -238,8 +240,10 @@ function isNeededForGraduation(
     }
   }
 
-  // 展開科目不足
+  // 展開科目不足（合計74単位、または各サブ要件）
   if (course.band === 'expansion') {
+    // 展開科目の合計が74単位未満なら、いずれの展開科目も補填対象
+    if (!checkResult.expansion.ok) return true
     if (!checkResult.expansion.foundationLiteracyCombined.ok && course.expansionTrack === 'foundation_literacy') return true
     if (!checkResult.expansion.multilingualInfoUnderstandingCombined.ok && course.expansionTrack === 'multilingual_information_understanding') return true
     if (!checkResult.expansion.worldUnderstandingCombined.ok && course.expansionTrack === 'world_understanding') return true

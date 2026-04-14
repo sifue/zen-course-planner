@@ -1,4 +1,4 @@
-import { FolderOpen, Trash2 } from 'lucide-react'
+import { FolderOpen, Trash2, CheckCircle2 } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import type { UseStorageReturn } from '@/hooks/useStorage'
@@ -28,12 +28,22 @@ export function LoadPlanModal({ open, onOpenChange, storage, onLoad }: LoadPlanM
           </div>
         ) : (
           <ul className="divide-y divide-gray-100">
-            {plans.map(plan => (
+            {plans.map(plan => {
+              const isActive = storage.activePlanId === plan.id
+              return (
               <li key={plan.id} className="flex items-center gap-3 py-2.5">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate">{plan.name}</p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-sm font-medium text-gray-800 truncate">{plan.name}</p>
+                    {isActive && (
+                      <span className="inline-flex items-center gap-0.5 text-xs text-emerald-600 shrink-0">
+                        <CheckCircle2 className="h-3 w-3" />
+                        編集中
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-gray-400">
-                    {new Date(plan.updatedAt).toLocaleString('ja-JP')}
+                    {plan.plannedCoursesCount}科目 · {new Date(plan.updatedAt).toLocaleString('ja-JP')}
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
@@ -53,7 +63,8 @@ export function LoadPlanModal({ open, onOpenChange, storage, onLoad }: LoadPlanM
                   </button>
                 </div>
               </li>
-            ))}
+            )
+            })}
           </ul>
         )}
         <div className="flex justify-end pt-2">
