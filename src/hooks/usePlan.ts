@@ -95,7 +95,7 @@ export function usePlan(initialPlan?: CoursePlan): UsePlanReturn {
   }, [updatePlan])
 
   const resetPlan = useCallback(() => {
-    updatePlan(() => ({ plannedCourses: [] }))
+    updatePlan(() => ({ plannedCourses: [], maxYears: 4 }))
   }, [updatePlan])
 
   const addYear = useCallback(() => {

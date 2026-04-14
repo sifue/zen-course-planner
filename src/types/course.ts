@@ -36,6 +36,18 @@ export type SubjectCategory =
   | 'elective'          // 選択
   | 'free'              // 自由
 
+/**
+ * シラバスサイト「分野から探す」のカテゴリ（subject_category_id に対応）
+ * B1 基礎科目・C展開科目を横断してプレフィックスで決定する
+ */
+export type FieldCategory =
+  | 'mathematics'       // 数理 (MTH prefix)
+  | 'information'       // 情報 (INF prefix)
+  | 'culture_thought'   // 文化・思想 (HUM prefix)
+  | 'society_network'   // 社会・ネットワーク (SOC prefix)
+  | 'economy_market'    // 経済・マーケット (ECON prefix)
+  | 'digital_industry'  // デジタル産業 (DIGI prefix)
+
 /** 科目データ */
 export interface Course {
   /** ナンバリング（科目コード）例: "BSC-1-B1-0204-002" */
@@ -83,6 +95,12 @@ export interface Course {
   isDigitalIndustryHistoryEligible: boolean
   /** プロジェクト実践（卒業プロジェクト必修）に該当するか */
   isRequiredProjectPractice: boolean
+  /**
+   * シラバスサイト「分野から探す」に対応するフィールドカテゴリ
+   * 科目コードのプレフィックスで決定（MTH=数理, INF=情報, HUM=文化・思想, SOC=社会・ネットワーク, ECON=経済・マーケット, DIGI=デジタル産業）
+   * BSC/LAN/CAR/OPT/PRJ等はnull
+   */
+  fieldCategory: FieldCategory | null
 
   /** 強く推奨される前提科目名リスト */
   strongPrerequisites: string[]

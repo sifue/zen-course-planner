@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react'
-import type { Course, FoundationGroup, TeachingMethod } from '@/types/course'
+import type { Course, FieldCategory, TeachingMethod } from '@/types/course'
 import type { FilterState, CategoryFilterKey } from '@/types/filters'
 import { DEFAULT_FILTER_STATE } from '@/types/filters'
 
@@ -106,14 +106,16 @@ export function useFilters(): UseFiltersReturn {
 
       // 分類フィルター
       if (filters.categories.size > 0) {
+        const FIELD_CATEGORIES = new Set<string>([
+          'mathematics', 'information', 'culture_thought',
+          'society_network', 'economy_market', 'digital_industry',
+        ])
         let matches = false
         for (const category of filters.categories) {
           // バンドコードで絞り込み
           if (category === course.band) { matches = true; break }
           // 展開科目系統で絞り込み
           if (course.band === 'expansion' && course.expansionTrack === category) { matches = true; break }
-          // 基礎科目分野で絞り込み（foundationGroups配列にカテゴリが含まれるか）
-          if (course.foundationGroups.includes(category as FoundationGroup)) { matches = true; break }
           // 多言語情報理解: 展開科目系統 + 基礎科目の多言語ITコミュニケーショングループを統合
           if (
             category === 'multilingual_information_understanding' &&
@@ -122,8 +124,10 @@ export function useFilters(): UseFiltersReturn {
           ) {
             matches = true; break
           }
-          // デジタル産業: isDigitalIndustryHistoryEligible フラグで絞り込み
-          if (category === 'digital_industry' && course.isDigitalIndustryHistoryEligible) { matches = true; break }
+          // フィールドカテゴリ（シラバスサイト「分野から探す」）: プレフィックスベース
+          if (FIELD_CATEGORIES.has(category) && course.fieldCategory === (category as FieldCategory)) {
+            matches = true; break
+          }
         }
         if (!matches) return false
       }

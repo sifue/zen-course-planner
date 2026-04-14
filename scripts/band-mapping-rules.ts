@@ -19,6 +19,15 @@ export type ExpansionTrack =
   | 'world_understanding'
   | 'social_connection';
 
+/** シラバスサイト「分野から探す」に対応するフィールドカテゴリ（プレフィックスで決定） */
+export type FieldCategory =
+  | 'mathematics'       // 数理 (MTH prefix)
+  | 'information'       // 情報 (INF prefix)
+  | 'culture_thought'   // 文化・思想 (HUM prefix)
+  | 'society_network'   // 社会・ネットワーク (SOC prefix)
+  | 'economy_market'    // 経済・マーケット (ECON prefix)
+  | 'digital_industry'  // デジタル産業 (DIGI prefix)
+
 export interface BandMapping {
   band: BandCode;
   foundationGroups: FoundationGroup[];
@@ -26,6 +35,23 @@ export interface BandMapping {
   countableToGraduation: boolean;
   isDigitalIndustryHistoryEligible: boolean;
   isRequiredProjectPractice: boolean;
+  /** シラバスサイト「分野から探す」対応カテゴリ（プレフィックスで決定、対応なしはnull） */
+  fieldCategory: FieldCategory | null;
+}
+
+/**
+ * プレフィックスからシラバスサイト「分野から探す」のフィールドカテゴリを推論する
+ */
+function inferFieldCategory(prefix: string): FieldCategory | null {
+  const map: Record<string, FieldCategory> = {
+    MTH: 'mathematics',
+    INF: 'information',
+    HUM: 'culture_thought',
+    SOC: 'society_network',
+    ECON: 'economy_market',
+    DIGI: 'digital_industry',
+  };
+  return map[prefix] ?? null;
 }
 
 /**
@@ -47,7 +73,7 @@ export function inferBandMapping(numbering: string): BandMapping {
   switch (bandCode) {
     case 'A1':
       // 導入科目（オンデマンド）
-      return { ...makeDefault('introduction') };
+      return { ...makeDefault('introduction'), fieldCategory: inferFieldCategory(prefix) };
 
     case 'A2':
       // 導入科目（ライブ映像）または基礎科目（多言語ITコミュニケーション）
@@ -60,10 +86,11 @@ export function inferBandMapping(numbering: string): BandMapping {
           countableToGraduation: true,
           isDigitalIndustryHistoryEligible: false,
           isRequiredProjectPractice: false,
+          fieldCategory: null,
         };
       }
       // INT-A2 = 導入（ライブ映像）
-      return { ...makeDefault('introduction') };
+      return { ...makeDefault('introduction'), fieldCategory: inferFieldCategory(prefix) };
 
     case 'A3':
       // 卒業プロジェクト科目
@@ -74,6 +101,7 @@ export function inferBandMapping(numbering: string): BandMapping {
         countableToGraduation: true,
         isDigitalIndustryHistoryEligible: false,
         isRequiredProjectPractice: prefix === 'PRJ',
+        fieldCategory: null,
       };
 
     case 'B1':
@@ -88,6 +116,7 @@ export function inferBandMapping(numbering: string): BandMapping {
         countableToGraduation: true,
         isDigitalIndustryHistoryEligible: false,
         isRequiredProjectPractice: false,
+        fieldCategory: null,
       };
 
     case 'C1':
@@ -105,6 +134,7 @@ export function inferBandMapping(numbering: string): BandMapping {
         countableToGraduation: false,
         isDigitalIndustryHistoryEligible: false,
         isRequiredProjectPractice: false,
+        fieldCategory: null,
       };
 
     default:
@@ -125,6 +155,7 @@ function inferFoundationB1(prefix: string, numbering: string): BandMapping {
       countableToGraduation: true,
       isDigitalIndustryHistoryEligible: true,
       isRequiredProjectPractice: false,
+      fieldCategory: 'digital_industry',
     };
   }
 
@@ -137,6 +168,7 @@ function inferFoundationB1(prefix: string, numbering: string): BandMapping {
       countableToGraduation: true,
       isDigitalIndustryHistoryEligible: false,
       isRequiredProjectPractice: false,
+      fieldCategory: null,
     };
   }
 
@@ -151,12 +183,13 @@ function inferFoundationB1(prefix: string, numbering: string): BandMapping {
       countableToGraduation: true,
       isDigitalIndustryHistoryEligible: false,
       isRequiredProjectPractice: false,
+      fieldCategory: null,
     };
   }
 
   // その他のB1（不明ケース）
   console.warn(`未知のB1 prefix: ${prefix} (${numbering})`);
-  return makeDefault('foundation');
+  return { ...makeDefault('foundation'), fieldCategory: inferFieldCategory(prefix) };
 }
 
 /**
@@ -192,6 +225,7 @@ function inferExpansionTrack(prefix: string): BandMapping {
     countableToGraduation: true,
     isDigitalIndustryHistoryEligible: false,
     isRequiredProjectPractice: false,
+    fieldCategory: inferFieldCategory(prefix),
   };
 }
 
@@ -203,5 +237,6 @@ function makeDefault(band: BandCode): BandMapping {
     countableToGraduation: band !== 'free',
     isDigitalIndustryHistoryEligible: false,
     isRequiredProjectPractice: false,
+    fieldCategory: null,
   };
 }

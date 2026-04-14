@@ -4,7 +4,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { inferBandMapping } from './band-mapping-rules'
+import { inferBandMapping, type FieldCategory } from './band-mapping-rules'
 
 // 手動補正データ
 import overridesRaw from './manual-overrides.json'
@@ -33,6 +33,7 @@ export interface CourseRaw {
   countableToGraduation: boolean
   isDigitalIndustryHistoryEligible: boolean
   isRequiredProjectPractice: boolean
+  fieldCategory: FieldCategory | null
   strongPrerequisites: string[]
   recommendedPrerequisites: string[]
   relatedCourses: string[]
@@ -245,6 +246,7 @@ export function extractCourse(filePath: string): CourseRaw | null {
   const finalCountable = bandMapping.countableToGraduation
   const finalDigitalEligible = (override?.isDigitalIndustryHistoryEligible as boolean) ?? bandMapping.isDigitalIndustryHistoryEligible
   const finalRequiredProject = (override?.isRequiredProjectPractice as boolean) ?? bandMapping.isRequiredProjectPractice
+  const finalFieldCategory = (override?.fieldCategory as FieldCategory | null) ?? bandMapping.fieldCategory
 
   return {
     id: numbering || `${fileId}`,
@@ -268,6 +270,7 @@ export function extractCourse(filePath: string): CourseRaw | null {
     countableToGraduation: finalCountable,
     isDigitalIndustryHistoryEligible: finalDigitalEligible,
     isRequiredProjectPractice: finalRequiredProject,
+    fieldCategory: finalFieldCategory,
     strongPrerequisites,
     recommendedPrerequisites,
     relatedCourses,
