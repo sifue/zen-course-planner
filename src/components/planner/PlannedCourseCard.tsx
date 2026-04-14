@@ -5,6 +5,14 @@ import { X, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { Course } from '@/types/course'
 import { BAND_COLORS } from '@/types/course'
 
+/** 授業方法のアイコン（グリッドカードの省スペース表示用） */
+const TEACHING_METHOD_ICON: Record<string, string> = {
+  on_demand: '📹',
+  live: '📡',
+  seminar: '🏫',
+  zemi: '🏫',
+}
+
 interface PlannedCourseCardProps {
   course: Course
   hasWarning?: boolean
@@ -56,6 +64,7 @@ export function PlannedCourseCard({
       {/* メタ情報 */}
       <div className="mt-0.5 flex items-center gap-1.5 text-gray-500">
         <span>{course.credits}単位</span>
+        <span className="text-gray-400">{TEACHING_METHOD_ICON[course.teachingMethod]}</span>
         {hasError && <AlertCircle className="h-3 w-3 text-red-500 shrink-0" />}
         {hasWarning && !hasError && <AlertTriangle className="h-3 w-3 text-amber-500 shrink-0" />}
       </div>
