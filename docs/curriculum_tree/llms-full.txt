@@ -1,0 +1,1094 @@
+# ZEN大学 進級・卒業要件 構造化仕様（2026-04-14確認版）
+
+## 0. この文書の目的
+
+この文書は、ZEN大学の **進級要件** と **卒業要件** を、LLMやプログラムで扱いやすいように構造化した仕様書です。
+
+この版では、次の3つを突き合わせて整理しています。
+
+1. 「進級・卒業について」の本文
+2. 卒業要件の表PDF
+3. カリキュラムツリーPDF
+
+**判定ロジックの根拠として最優先するのは 1 と 2** です。  
+**3 は、科目分類や学びの流れを補助的に理解する資料** として使います。
+
+なお注意すべき事項として
+
+- オンデマンド科目は1クォーター分で基本的には2単位、ただし一部の科目は1単位であることがある(pixiv連携科目など)
+- ライブ授業科目は2短期であるが、前期(1-2Q)と後期(3-4Q)のどちらかであり、多言語ITコミュニケーションと人工知能活用実践の2科目を除き、前期か後期かの開講である
+- 演習科目/ゼミは、前期(1-2Q)と後期(3-4Q)のいずれかもしくは通期で、2クォーター連続/4クォーター連続で開講されることが多い
+- 卒業プロジェクト科目は、プロジェクト実践が必修で、1年間4クォーター連続で開講される
+
+以上を前提として、卒業要件や進級要件を満たす必要がある。
+
+---
+
+## 1. 出典の優先順位
+
+```yaml
+source_priority:
+  - rank: 1
+    source: 学生便覧「進級・卒業について」の本文
+    role: 進級要件・卒業要件・判定時期・在学年数条件の正式根拠
+  - rank: 2
+    source: 卒業要件の表PDF
+    role: 卒業所要単位数と分類条件の正式根拠
+  - rank: 3
+    source: カリキュラムツリーPDF
+    role: 各科目がどの分類に属するか、学習順序や対応関係を補助的に把握する資料
+  - rank: 4
+    source: 公開シラバス
+    role: 各科目の単位数・開講形態・前提科目・後継科目などの科目単位メタデータ
+```
+
+### 運用ルール
+
+- 要件の数値や判定条件が衝突した場合は、**学生便覧本文と卒業要件表を優先**する。
+- カリキュラムツリーは、**分類の読み解き補助**には使うが、単独では卒業判定の唯一根拠にしない。
+- 科目ごとの詳細は **公開シラバス** で補完する。
+
+---
+
+## 2. 用語定義
+
+```yaml
+terms:
+  enrolled_years:
+    name: 在学年数
+    definition: 休学期間を除いた在学期間
+  countable_credits:
+    name: 卒業要件に算入できる単位
+    definition: 卒業要件の単位として認められる単位のみ
+  free_courses:
+    name: 自由科目
+    definition: 卒業要件の科目ではない
+```
+
+### 注意
+
+- **進級・卒業要件は入学年度のものが適用**される。
+- 単位数として数えるのは、**卒業要件の単位として認められるもののみ**である。
+- **自由科目は卒業要件に含まれない**。
+- **社会接続科目は、卒業要件へ算入できるのが最大10単位まで**である。
+
+---
+
+## 3. 進級要件
+
+### 3.1 年次進行の基本ルール
+
+```yaml
+promotion_rules:
+  year1_to_year2:
+    min_enrolled_years: 1
+    min_countable_credits: null
+  year2_to_year3:
+    min_enrolled_years: 2
+    min_countable_credits: null
+  year3_to_year4:
+    min_enrolled_years: 3
+    min_countable_credits: 90
+    note: 早期卒業者を除く
+```
+
+### 解釈
+
+- **1年次→2年次** は、1年以上在学していればよい。単位修得要件はない。
+- **2年次→3年次** は、2年以上在学していればよい。単位修得要件はない。
+- **3年次→4年次** は、次の両方が必要。
+  - 3年次終了時に **修得総単位数90単位以上**
+  - **3年以上在学**していること
+
+### 3.2 進級判定時期
+
+```yaml
+promotion_judgement_timing:
+  april_admission:
+    judgement_at: 秋学期終了時
+    quarter: 4
+  october_admission:
+    judgement_at: 春学期終了時
+    quarter: 2
+  leave_of_absence_note:
+    judgement_at: 復学後に在学要件を満たす最初の学期末
+```
+
+### 3.3 進級認定と未達時の扱い
+
+```yaml
+promotion_result:
+  satisfied: 教授会の審議を経て進級認定
+  unsatisfied: 留年（原級に留める）
+```
+
+---
+
+## 4. 卒業要件
+
+### 4.1 最上位条件
+
+```yaml
+graduation_rules:
+  min_enrolled_years: 4
+  min_total_countable_credits: 124
+  additional_required_categories:
+    - 導入科目
+    - 基礎科目
+    - 展開科目
+    - 卒業プロジェクト科目
+```
+
+### 4.2 卒業所要単位数の正式構造
+
+```yaml
+graduation_category_requirements:
+  introduction_courses:
+    name: 導入科目
+    min_credits: 14
+
+  foundation_courses:
+    name: 基礎科目
+    min_credits: 12
+    subrequirements:
+      - key: mathematics
+        name: 数理
+        min_credits: 2
+      - key: information
+        name: 情報
+        min_credits: 2
+      - key: culture_thought
+        name: 文化・思想
+        min_credits: 2
+      - key: society_network
+        name: 社会・ネットワーク
+        min_credits: 2
+      - key: economy_market
+        name: 経済・マーケット
+        min_credits: 2
+      - key: multilingual_it_communication
+        name: 多言語ITコミュニケーション
+        min_credits: 2
+
+  expansion_courses:
+    name: 展開科目
+    min_credits: 74
+    subrequirements:
+      - key: foundation_literacy_combined
+        name: 基盤リテラシー科目（基礎科目の履修も合算）
+        min_credits: 8
+      - key: multilingual_information_understanding_combined
+        name: 多言語情報理解科目（基礎科目の履修も合算）
+        min_credits: 8
+      - key: world_understanding_combined
+        name: 世界理解科目（基礎科目の履修も合算）
+        min_credits: 26
+      - key: digital_industry_history
+        name: デジタル産業の指定4科目群
+        min_credits: 2
+        eligible_courses:
+          - IT産業史
+          - マンガ産業史
+          - アニメ産業史
+          - 日本のゲーム産業史
+      - key: social_connection_cap
+        name: 社会接続科目の算入上限
+        max_countable_credits: 10
+
+  graduation_project_courses:
+    name: 卒業プロジェクト科目
+    min_credits: 4
+    required_course:
+      - プロジェクト実践
+```
+
+---
+
+## 5. 判定ロジックとしての正規化
+
+卒業判定では、単純に「列ごとの単位数」を見るだけでは不十分です。  
+正式な判定では、**科目をまず大分類（導入 / 基礎 / 展開 / 卒プロ / 自由）に置き、そのうえで一部の集計は横断的に合算**する必要があります。
+
+### 5.1 科目の正規化属性
+
+各科目には、少なくとも次の属性を持たせると扱いやすいです。
+
+```yaml
+course_schema:
+  course_id: string
+  course_name: string
+  credits: integer
+  band:
+    allowed:
+      - introduction
+      - foundation
+      - expansion
+      - graduation_project
+      - free
+  foundation_groups:
+    type: array
+    allowed_values:
+      - mathematics
+      - information
+      - culture_thought
+      - society_network
+      - economy_market
+      - multilingual_it_communication
+  expansion_track:
+    allowed:
+      - foundation_literacy
+      - multilingual_information_understanding
+      - world_understanding
+      - social_connection
+      - null
+  tags:
+    type: array
+    examples:
+      - digital_industry_history_eligible
+      - required_project_practice
+  countable_to_graduation: boolean
+```
+
+### 5.2 合算の定義
+
+```yaml
+combined_credit_definitions:
+  foundation_literacy_combined:
+    formula:
+      - 基礎科目のうち foundation_groups に mathematics または information を持つ科目の単位合計
+      - 展開科目のうち expansion_track = foundation_literacy の単位合計
+
+  multilingual_information_understanding_combined:
+    formula:
+      - 基礎科目のうち foundation_groups に multilingual_it_communication を持つ科目の単位合計
+      - 展開科目のうち expansion_track = multilingual_information_understanding の単位合計
+
+  world_understanding_combined:
+    formula:
+      - 基礎科目のうち foundation_groups に culture_thought / society_network / economy_market を持つ科目の単位合計
+      - 展開科目のうち expansion_track = world_understanding の単位合計
+```
+
+### 5.3 社会接続科目の扱い
+
+```yaml
+social_connection_rule:
+  raw_earned_credits: 履修した単位数そのもの
+  countable_credits: min(raw_earned_credits, 10)
+  applies_to:
+    - 卒業要件の総単位数 124
+    - 展開科目 74単位の算入
+```
+
+### 5.4 自由科目の扱い
+
+```yaml
+free_course_rule:
+  raw_earned_credits: 履修した単位数そのもの
+  countable_credits: 0
+  applies_to:
+    - 進級要件の単位集計
+    - 卒業要件の単位集計
+```
+
+---
+
+## 6. 数式としての卒業判定
+
+### 6.1 基本式
+
+```text
+counted_total_credits >= 124
+```
+
+```text
+introduction_credits >= 14
+foundation_credits >= 12
+expansion_credits_counted >= 74
+graduation_project_credits >= 4
+```
+
+### 6.2 基礎科目の下位条件
+
+```text
+foundation[mathematics] >= 2
+foundation[information] >= 2
+foundation[culture_thought] >= 2
+foundation[society_network] >= 2
+foundation[economy_market] >= 2
+foundation[multilingual_it_communication] >= 2
+```
+
+### 6.3 展開科目の横断条件
+
+```text
+foundation_literacy_combined >= 8
+multilingual_information_understanding_combined >= 8
+world_understanding_combined >= 26
+digital_industry_history_credits >= 2
+counted_social_connection_credits <= 10
+```
+
+---
+
+## 7. ここで重要な読み替え
+
+### 7.1 前版からの重要な修正点
+
+以前のドラフトでは、カリキュラムツリーの列をそのまま卒業判定カテゴリとみなす方向に寄っていました。  
+しかし、正式な卒業判定の骨格は次の **4大分類** です。
+
+```yaml
+official_graduation_bands:
+  - 導入科目
+  - 基礎科目
+  - 展開科目
+  - 卒業プロジェクト科目
+```
+
+そのうえで、
+
+- 基盤リテラシー
+- 多言語情報理解
+- 世界理解
+- 社会接続
+
+は、**展開科目内の区分**として扱われます。
+
+### 7.2 最低単位の見方
+
+公式な大分類の最低単位は次です。
+
+```yaml
+official_band_minimums:
+  introduction: 14
+  foundation: 12
+  expansion: 74
+  graduation_project: 4
+  subtotal: 104
+```
+
+したがって、**124単位卒業**に対して、最低配分 104 単位だけでは足りません。  
+**さらに20単位以上** を、卒業要件に算入できる科目で積み増す必要があります。
+
+この「追加20単位」は、
+
+- 導入科目をさらに履修する
+- 基礎科目をさらに履修する
+- 展開科目をさらに履修する
+- 卒業プロジェクト科目に追加科目があるなら履修する
+
+といった形で満たすことになります。通常は展開科目で積み増す設計と考えるのが自然です。
+
+---
+
+## 8. 進級・卒業の周辺ルール
+
+```yaml
+judgement_timing:
+  graduation:
+    - 春学期終了時（2クオーター終了時）
+    - 秋学期終了時（4クオーター終了時）
+
+recognition:
+  promotion: 教授会の審議を経て認定
+  graduation: 教授会の審議を経て認定し、学士の学位を授与
+
+postponement:
+  graduation_postponed_if:
+    - 卒業判定時に卒業要件を満たしていない
+    - 休学等により在学年数が修業年限4年に達していない
+
+midyear_graduation:
+  condition: 前年度卒業延期後、その後の年度途中で卒業要件を満たした場合に認められる
+```
+
+---
+
+## 9. 早期卒業（2028年度以降）
+
+```yaml
+early_graduation:
+  available_from: 2028年度以降
+  min_enrolled_years: 3
+  preliminary_requirements_at_end_of_year2:
+    - 88単位以上を優秀な成績で取得
+    - 所定の累積GPAを満たす
+    - 本学への申出と所定審査
+  note: GPAの具体的基準値は、この資料では未提示
+```
+
+### 実装上の注意
+
+- **GPAの閾値そのものは、今回の添付資料では明示されていない**。
+- そのため、プログラムでは
+  - `gpa_requirement_met: bool`
+  - `application_screening_passed: bool`
+  のように、外部判定結果を受け取る形にしておくのが安全です。
+
+---
+
+## 10. LLM / プログラム向けの実装方針
+
+### 10.1 最低限必要な入力
+
+```yaml
+student_input_schema:
+  admission_year: integer
+  admission_month:
+    allowed: [4, 10]
+  enrolled_years_excluding_leave: number
+  completed_course_ids:
+    type: array[string]
+  course_catalog_version: string
+```
+
+### 10.2 1科目ごとに必要な情報
+
+```yaml
+required_course_master_fields:
+  - course_id
+  - course_name
+  - credits
+  - band
+  - foundation_groups
+  - expansion_track
+  - tags
+  - countable_to_graduation
+  - applicable_cohorts
+```
+
+### 10.3 今回の仕様で未確定のもの
+
+```yaml
+out_of_scope_or_unknown:
+  - 入学年度ごとの差分を含む完全な科目マスタ
+  - 単位互換制度の具体ルール
+  - GPAの具体閾値
+  - 個別科目の前提科目・後継科目の完全一覧
+```
+
+これらは **シラバスや別規程** で補完する。
+
+---
+
+## 11. 実装上の推奨結論
+
+### 結論
+
+ZEN大学の進級・卒業判定をプログラム化する場合、**科目を1つの単純カテゴリにだけ入れるのではなく、次の2軸で管理する**のが最も安全です。
+
+1. **大分類**: 導入 / 基礎 / 展開 / 卒プロ / 自由
+2. **横断ラベル**: 数理・情報・文化思想・社会ネットワーク・経済マーケット・多言語ITコミュニケーション・基盤リテラシー・多言語情報理解・世界理解・社会接続・デジタル産業指定科目
+
+この形にすると、
+
+- 基礎科目の12単位判定
+- 展開科目の74単位判定
+- 基礎+展開の横断合算判定
+- 社会接続10単位上限
+- 自由科目除外
+
+を、矛盾なく同時に実装できます。
+
+
+
+---
+
+# 付録: カリキュラムツリー構造化データ インデックス
+
+# ZEN大学 カリキュラム・ツリー構造化データ - インデックス
+
+このフォルダには、以下の3つのカリキュラム・ツリーを、LLMやプログラム向けに構造化した Markdown を格納している。
+
+## 対象ファイル
+- `zen_curriculum_tree_economy_markets_structured.md`
+- `zen_curriculum_tree_data_science_structured.md`
+- `zen_curriculum_tree_information_structured.md`
+
+## 共通方針
+- PDF の接続線は、原則として **推奨履修順・学習上の接続** として解釈する。
+- **正式な前提科目** はシラバスを優先する。
+- 図で複数の線が合流・分岐して個別対応が切り分けられない場合は、
+  - `group_to_group`
+  - `group_to_one`
+  - `broad_feeder_relation`
+  のような表現で保持する。
+- 学年・クオーターの配置は、図上の位置を保持する目的で記述している。
+- 単位数、必修/選択、正式な開講学期は別の科目マスタで管理するのが望ましい。
+
+## 推奨運用
+- この Markdown は、**検索・要約・経路推定・履修相談の補助**に使う。
+- 単位判定や厳密な要件判定には、別途作成した卒業要件データおよび科目マスタを使う。
+
+
+---
+
+# 付録: カリキュラムツリー構造化データ - データサイエンス
+
+# ZEN大学 カリキュラム・ツリー構造化データ - データサイエンス
+
+## 0. この文書の目的
+この文書は、PDF「カリキュラム・ツリー データサイエンス」を、LLMやプログラムが扱いやすいように、**分類・年次/クオーター配置・接続関係・演習科目フラグ**を構造化して記述したものです。
+
+## 1. 出典
+- source_pdf: `curriculumTree_datascience20251002.pdf`
+- source_title: `カリキュラム・ツリー データサイエンス`
+
+## 2. 解釈ルール
+- このPDFは**履修順の推奨や科目群の連関**を図示した資料として扱う。
+- 図中の接続線は、この文書では `recommended_preparation` として表現する。
+- **正式な前提科目の定義ではない**。シラバスの記載が優先される。
+- `year` と `quarter` は、図中の配置をもとに記述する。
+- 背の高い長方形は、図の見た目上、複数クオーターにまたがって表示されている。必要に応じて `quarter_span` を記述する。
+- 図中の太い枠線は凡例より **演習科目** を意味するため、`is_practicum: true` を付与する。
+
+## 3. 全体構造
+
+```yaml
+curriculum_tree:
+  domain: "データサイエンス"
+  axes:
+    years: [1, 2, 3, 4]
+    quarters: ["1Q", "2Q", "3Q", "4Q"]
+  systems:
+    - id: "information_system"
+      label: "情報系"
+    - id: "mathematics_system"
+      label: "数学系"
+  legend:
+    thick_border: "演習科目"
+```
+
+## 4. 科目一覧
+
+```yaml
+courses:
+  - system: "情報系"
+    items:
+      - {course_name: "人工知能活用実践", year: 1, quarter_span: ["1Q", "2Q"], is_practicum: false}
+      - {course_name: "データサイエンス概論", year: 1, quarter: "2Q", is_practicum: false}
+      - {course_name: "ITリテラシー", year: 1, quarter: "1Q", is_practicum: false}
+      - {course_name: "デジタルツールの使い方", year: 1, quarter: "2Q", is_practicum: false}
+      - {course_name: "Pythonプログラミング", year: 1, quarter: "2Q", is_practicum: false}
+      - {course_name: "AI社会の歩き方", year: 1, quarter_span: ["1Q", "2Q"], is_practicum: false}
+      - {course_name: "多言語ITコミュニケーション", year: 1, quarter_span: ["3Q", "4Q"], is_practicum: false}
+      - {course_name: "統計学入門", year: 1, quarter: "3Q", is_practicum: false}
+      - {course_name: "情報収集と伝達技術", year: 1, quarter_span: ["3Q", "4Q"], is_practicum: true}
+      - {course_name: "機械学習概論", year: 2, quarter: "1Q", is_practicum: false}
+      - {course_name: "R言語プログラミング", year: 2, quarter: "1Q", is_practicum: false}
+      - {course_name: "ディープラーニング1", year: 2, quarter: "3Q", is_practicum: false}
+      - {course_name: "AIアルゴリズム実践", year: 2, quarter_span: ["3Q", "4Q"], is_practicum: true}
+      - {course_name: "ビッグデータ分析概論", year: 2, quarter: "3Q", is_practicum: false}
+      - {course_name: "計算機実験で学ぶ確率とモンテカルロ法", year: 2, quarter: "3Q", is_practicum: false}
+      - {course_name: "ディープラーニング2", year: 3, quarter: "1Q", is_practicum: false}
+      - {course_name: "データサイエンス実践I（アンケート）", year: 3, quarter: "1Q", is_practicum: false}
+      - {course_name: "ビッグデータ分析実践", year: 3, quarter: "1Q", is_practicum: false}
+      - {course_name: "統計学展望", year: 3, quarter_span: ["1Q", "2Q"], is_practicum: true}
+      - {course_name: "データベース運用実践", year: 3, quarter: "2Q", is_practicum: false}
+      - {course_name: "ディープラーニング3", year: 3, quarter: "3Q", is_practicum: false}
+      - {course_name: "データサイエンス実践II（モデリング）", year: 3, quarter: "3Q", is_practicum: false}
+      - {course_name: "マーケティング×データサイエンス", year: 3, quarter_span: ["3Q", "4Q"], is_practicum: true}
+      - {course_name: "統計数理の方法", year: 3, quarter_span: ["3Q", "4Q"], is_practicum: true}
+      - {course_name: "データサイエンス実践III（時系列）", year: 4, quarter: "1Q", is_practicum: false}
+      - {course_name: "自然言語処理の方法", year: 4, quarter_span: ["1Q", "2Q"], is_practicum: true}
+      - {course_name: "ゼミ（AIデータサイエンス価値創造ゼミ I）", year: 4, quarter_span: ["1Q", "4Q"], is_practicum: true}
+      - {course_name: "ゼミ（AIデータサイエンス価値創造ゼミ II）", year: 4, quarter_span: ["1Q", "4Q"], is_practicum: true}
+
+  - system: "数学系"
+    items:
+      - {course_name: "現代社会と数学", year: 1, quarter: "1Q", is_practicum: false}
+      - {course_name: "解析学1", year: 1, quarter: "2Q", is_practicum: false}
+      - {course_name: "線形代数1", year: 1, quarter: "3Q", is_practicum: false}
+      - {course_name: "解析学2", year: 1, quarter: "4Q", is_practicum: false}
+      - {course_name: "線形代数2", year: 2, quarter: "1Q", is_practicum: false}
+      - {course_name: "数理統計", year: 3, quarter: "2Q", is_practicum: false}
+```
+
+## 5. 図から明確に読める接続関係
+
+```yaml
+recommended_preparation:
+  - {from: ["ITリテラシー"], to: ["デジタルツールの使い方"], confidence: "high"}
+  - {from: ["AI社会の歩き方"], to: ["情報収集と伝達技術"], confidence: "high"}
+
+  - {from: ["データサイエンス概論"], to: ["統計学入門"], confidence: "high"}
+  - {from: ["統計学入門"], to: ["機械学習概論"], confidence: "high"}
+  - {from: ["機械学習概論"], to: ["AIアルゴリズム実践"], confidence: "high"}
+
+  - {from: ["ディープラーニング1"], to: ["ディープラーニング2"], confidence: "high"}
+  - {from: ["ディープラーニング2"], to: ["ディープラーニング3"], confidence: "high"}
+
+  - {from: ["ビッグデータ分析概論"], to: ["ビッグデータ分析実践"], confidence: "high"}
+  - {from: ["ビッグデータ分析実践"], to: ["データベース運用実践"], confidence: "high"}
+
+  - {from: ["計算機実験で学ぶ確率とモンテカルロ法"], to: ["統計学展望"], confidence: "high"}
+  - {from: ["統計学展望"], to: ["統計数理の方法"], confidence: "high"}
+
+  - {from: ["現代社会と数学"], to: ["解析学1"], confidence: "high"}
+  - {from: ["解析学1"], to: ["線形代数1"], confidence: "high"}
+  - {from: ["線形代数1"], to: ["解析学2"], confidence: "high"}
+  - {from: ["解析学2"], to: ["線形代数2"], confidence: "high"}
+  - {from: ["線形代数2"], to: ["数理統計"], confidence: "high"}
+```
+
+## 6. 図上で時系列に並ぶが、接続線は明示されていない科目群
+
+```yaml
+ordered_but_not_explicitly_connected:
+  - series_name: "データサイエンス実践"
+    items:
+      - "データサイエンス実践I（アンケート）"
+      - "データサイエンス実践II（モデリング）"
+      - "データサイエンス実践III（時系列）"
+    note: "名称と配置から連続的に見えるが、図中では各科目の間に明示的な接続線は描かれていない。"
+
+  - series_name: "ゼミ"
+    items:
+      - "ゼミ（AIデータサイエンス価値創造ゼミ I）"
+      - "ゼミ（AIデータサイエンス価値創造ゼミ II）"
+    note: "4年次の最終段に長い縦長の箱として配置されているが、どの科目から必ず接続されるかは図だけでは固定しない。"
+
+  - series_name: "プログラミング補助群"
+    items:
+      - "Pythonプログラミング"
+      - "R言語プログラミング"
+    note: "配置上は情報系の基礎技能群に含まれるが、図中の接続線は明示的ではない。"
+
+  - series_name: "応用実践群"
+    items:
+      - "マーケティング×データサイエンス"
+      - "自然言語処理の方法"
+    note: "下流の応用・演習科目として配置されるが、直前の特定単一科目との接続線は図だけでは明確でない。"
+```
+
+## 7. LLM/プログラム向けの要点
+- このツリーは、**情報系** と **数学系** の2系統で構成される。
+- 情報系には、基礎導入、機械学習、ディープラーニング、ビッグデータ、統計応用、ゼミが含まれる。
+- 数学系には、現代社会と数学から始まる数理の縦系列があり、最終的に数理統計へ接続する。
+- 太枠の科目は `is_practicum: true` として扱う。
+- `quarter` / `quarter_span` は**図上の配置情報**であり、正式な開講学期の定義とは切り分けて運用するのが安全。
+
+
+---
+
+# 付録: カリキュラムツリー構造化データ - 経済・マーケット
+
+# ZEN大学 カリキュラム・ツリー構造化データ - 経済・マーケット
+
+## 0. この文書の目的
+この文書は、PDF「カリキュラム・ツリー 経済・マーケット」を、LLMやプログラムが扱いやすいように、**分類・配置・接続関係**を構造化して記述したものです。
+
+## 1. 出典
+- source_pdf: `curriculumTree_economymarkets20251001.pdf`
+- source_title: `カリキュラム・ツリー 経済・マーケット`
+
+## 2. 解釈ルール
+- このPDFは**履修順の推奨や科目群の連関**を図示した資料として扱う。
+- 図中の接続線は、この文書では `recommended_preparation`（推奨される準備関係）として表現する。
+- **厳密な履修条件・前提科目の正式定義ではない**。正式な前提条件はシラバスで確認する。
+- `all_years` は「全学年」を表し、固定学年ではない。
+- 図中で複数科目が1つの括り線でまとめられている場合、**個別の 1対1 対応が分離できない**ことがある。その場合は `group_to_group` または `group_to_one` として記述する。
+
+## 3. 全体構造
+
+```yaml
+curriculum_tree:
+  domain: "経済・マーケット"
+  time_axis:
+    - "全学年"
+    - "2年次"
+    - "3年次"
+    - "4年次"
+  areas:
+    - id: "economy"
+      label: "経済"
+      course_count_label: "11科目"
+    - id: "management"
+      label: "経営"
+      course_count_label: "12科目"
+    - id: "regional"
+      label: "地域"
+      course_count_label: "4科目"
+```
+
+## 4. 科目一覧
+
+```yaml
+courses:
+  - area: "経済"
+    items:
+      - {course_name: "経済入門", year_bucket: "全学年"}
+      - {course_name: "経済言説史", year_bucket: "全学年"}
+      - {course_name: "マルクス経済学", year_bucket: "全学年"}
+      - {course_name: "マクロ経済学", year_bucket: "2年次"}
+      - {course_name: "ミクロ経済学", year_bucket: "2年次"}
+      - {course_name: "現代資本主義論", year_bucket: "2年次"}
+      - {course_name: "マクロ経済分析演習", year_bucket: "3年次"}
+      - {course_name: "事例から学ぶ統計学", year_bucket: "3年次"}
+      - {course_name: "課題解決のための計量経済分析", year_bucket: "3年次"}
+      - {course_name: "ゼミ（経済発展を考える）", year_bucket: "4年次"}
+      - {course_name: "ゼミ（計量経済）", year_bucket: "4年次"}
+
+  - area: "経営"
+    items:
+      - {course_name: "企業経営", year_bucket: "全学年"}
+      - {course_name: "企業経営と会計", year_bucket: "全学年"}
+      - {course_name: "企業経営とファイナンス", year_bucket: "2年次"}
+      - {course_name: "デジタル・マーケティング", year_bucket: "2年次"}
+      - {course_name: "スタートアップ", year_bucket: "2年次"}
+      - {course_name: "交渉・合意形成概論", year_bucket: "2年次"}
+      - {course_name: "企業価値創造とM&A", year_bucket: "3年次"}
+      - {course_name: "財務分析演習", year_bucket: "3年次"}
+      - {course_name: "交渉・合意形成演習", year_bucket: "3年次"}
+      - {course_name: "ゼミ（幸福曲線）", year_bucket: "4年次"}
+      - {course_name: "ゼミ（ビジネスモデル分析）", year_bucket: "4年次"}
+      - {course_name: "スタートアップ実践", year_bucket: "4年次"}
+
+  - area: "地域"
+    items:
+      - {course_name: "地域アントレプレナーシップ", year_bucket: "全学年"}
+      - {course_name: "地域課題の解決とイノベーション", year_bucket: "全学年"}
+      - {course_name: "農業とデジタルテクノロジー", year_bucket: "2年次"}
+      - {course_name: "ゼミ（地域づくり新事業ワークショップ）", year_bucket: "3年次"}
+```
+
+## 5. 図から明確に読める接続関係
+
+```yaml
+recommended_preparation:
+  - relation_type: "group_to_group"
+    from_courses: ["経済入門", "経済言説史"]
+    to_courses: ["マクロ経済学", "ミクロ経済学"]
+    confidence: "high"
+    note: "図では2科目が1つの括り線でまとめられ、その先で2科目に分岐している。個別の 1対1 対応は図からは分離しない。"
+
+  - relation_type: "one_to_one"
+    from_courses: ["マクロ経済学"]
+    to_courses: ["マクロ経済分析演習"]
+    confidence: "high"
+
+  - relation_type: "one_to_one"
+    from_courses: ["ミクロ経済学"]
+    to_courses: ["事例から学ぶ統計学"]
+    confidence: "high"
+
+  - relation_type: "one_to_one"
+    from_courses: ["マルクス経済学"]
+    to_courses: ["現代資本主義論"]
+    confidence: "high"
+
+  - relation_type: "one_to_one"
+    from_courses: ["現代資本主義論"]
+    to_courses: ["課題解決のための計量経済分析"]
+    confidence: "high"
+
+  - relation_type: "group_to_one"
+    from_courses: ["企業経営", "企業経営と会計"]
+    to_courses: ["企業経営とファイナンス"]
+    confidence: "high"
+
+  - relation_type: "one_to_group"
+    from_courses: ["企業経営とファイナンス"]
+    to_courses: ["企業価値創造とM&A", "財務分析演習"]
+    confidence: "high"
+
+  - relation_type: "group_to_group"
+    from_courses: ["企業価値創造とM&A", "財務分析演習"]
+    to_courses: ["ゼミ（幸福曲線）", "ゼミ（ビジネスモデル分析）"]
+    confidence: "medium"
+    note: "図では2科目が1つの括り線に集約され、その先で2つのゼミにつながっている。各ゼミがどちらに個別対応するかは図だけでは確定しない。"
+
+  - relation_type: "one_to_one"
+    from_courses: ["スタートアップ"]
+    to_courses: ["スタートアップ実践"]
+    confidence: "high"
+
+  - relation_type: "one_to_one"
+    from_courses: ["交渉・合意形成概論"]
+    to_courses: ["交渉・合意形成演習"]
+    confidence: "high"
+
+  - relation_type: "group_to_group"
+    from_courses: ["地域アントレプレナーシップ", "地域課題の解決とイノベーション"]
+    to_courses: ["農業とデジタルテクノロジー", "ゼミ（地域づくり新事業ワークショップ）"]
+    confidence: "medium"
+    note: "左側2科目が1つの括り線でまとめられ、右側の2科目方向へ展開している。個別対応は図から断定しない。"
+```
+
+## 6. 推奨履修パスとして読めるまとまり
+
+### 6.1 経済
+- 導入層:
+  - 経済入門
+  - 経済言説史
+  - マルクス経済学
+- 中間層:
+  - マクロ経済学
+  - ミクロ経済学
+  - 現代資本主義論
+- 応用層:
+  - マクロ経済分析演習
+  - 事例から学ぶ統計学
+  - 課題解決のための計量経済分析
+- 発展層:
+  - ゼミ（経済発展を考える）
+  - ゼミ（計量経済）
+
+### 6.2 経営
+- 導入層:
+  - 企業経営
+  - 企業経営と会計
+- 中間層:
+  - 企業経営とファイナンス
+  - デジタル・マーケティング
+  - スタートアップ
+  - 交渉・合意形成概論
+- 応用層:
+  - 企業価値創造とM&A
+  - 財務分析演習
+  - 交渉・合意形成演習
+- 発展層:
+  - ゼミ（幸福曲線）
+  - ゼミ（ビジネスモデル分析）
+  - スタートアップ実践
+
+### 6.3 地域
+- 導入層:
+  - 地域アントレプレナーシップ
+  - 地域課題の解決とイノベーション
+- 中間〜応用層:
+  - 農業とデジタルテクノロジー
+  - ゼミ（地域づくり新事業ワークショップ）
+
+## 7. 機械処理向け補足
+- この文書の `recommended_preparation` は **正式な prerequisite** ではなく、図示された履修の流れを保持するためのデータ。
+- 個別の前提条件や単位数は、別途シラバスや科目マスタで持つことを推奨する。
+- 経済・経営・地域の3区分は、このPDFの主分類そのものとして扱ってよい。
+
+
+---
+
+# 付録: カリキュラムツリー構造化データ - 情報
+
+# ZEN大学 カリキュラム・ツリー構造化データ - 情報
+
+## 0. この文書の目的
+この文書は、PDF「カリキュラム・ツリー 情報」を、LLMやプログラムが扱いやすいように、**分類・推奨履修順・学習経路のまとまり**として構造化して記述したものです。
+
+## 1. 出典
+- source_pdf: `curriculumTree_appliedinformatics20251001.pdf`
+- source_title: `カリキュラム・ツリー 情報`
+
+## 2. 解釈ルール
+- このPDFは**情報分野の学習経路の見取り図**として扱う。
+- 図中の接続線は、この文書では `recommended_preparation` として表現する。
+- **正式な前提科目の定義ではない**。前提条件はシラバスを優先する。
+- この図は「1年次〜4年次」の縦軸と、**IT基礎 / コンピューターサイエンス / アプリケーション開発基礎 / アプリケーション開発応用 / プログラミング基礎 / デジタルクリエイティブ** という横断的な科目群で構成されている。
+- 白線が複数の科目箱の間で合流・分岐する箇所は、**厳密な 1対1 の前提対応が切り出せない**場合がある。その場合は `broad_feeder_relation` として表現する。
+- 最下部の2つの大きな箱は、**履修者像のガイド**であり、卒業要件上の独立分類ではない。
+
+## 3. 全体構造
+
+```yaml
+curriculum_tree:
+  domain: "情報"
+  years: [1, 2, 3, 4]
+  groups:
+    - "IT基礎"
+    - "プログラミング基礎"
+    - "デジタルクリエイティブ"
+    - "コンピューターサイエンス"
+    - "アプリケーション開発基礎"
+    - "アプリケーション開発応用"
+  learner_guidance_boxes:
+    - "情報 - 教養として情報を学びたい方向け"
+    - "情報 - 情報を専門的に学びたい方向け"
+```
+
+## 4. 科目一覧
+
+```yaml
+courses:
+  - group: "IT基礎"
+    items:
+      - {course_name: "ITリテラシー", year: 1}
+      - {course_name: "情報倫理と法", year: 1}
+      - {course_name: "多言語ITコミュニケーション", year: 1}
+      - {course_name: "デジタルツールの使い方", year: 1}
+      - {course_name: "情報セキュリティ概論", year: 1}
+      - {course_name: "インターネット概論", year: 2}
+      - {course_name: "コンピュータ概論", year: 2}
+      - {course_name: "情報処理概論", year: 2}
+      - {course_name: "プロジェクトマネジメント概論", year: 2}
+
+  - group: "プログラミング基礎"
+    items:
+      - {course_name: "ビジュアルプログラミング", year: 1}
+      - {course_name: "Pythonプログラミング", year: 1}
+
+  - group: "コンピューターサイエンス"
+    items:
+      - {course_name: "コンピューターサイエンス概論", year: 2}
+      - {course_name: "Webセキュリティ演習", year: 2}
+      - {course_name: "オートマトンと形式言語理論", year: 3}
+      - {course_name: "論理回路概論", year: 3}
+      - {course_name: "画像処理論", year: 3}
+      - {course_name: "暗号技術とその応用", year: 3}
+      - {course_name: "ゼミ（情報セキュリティ）", year: 3}
+
+  - group: "アプリケーション開発基礎"
+    items:
+      - {course_name: "Webアプリケーション開発1", year: 1}
+      - {course_name: "Webアプリケーション開発2", year: 1}
+      - {course_name: "Webアプリケーション開発3", year: 2}
+      - {course_name: "Webアプリケーション開発4", year: 2}
+      - {course_name: "Linux概論", year: 2}
+
+  - group: "アプリケーション開発応用"
+    items:
+      - {course_name: "Javaプログラミング演習", year: 2}
+      - {course_name: "JavaScriptによる自動化、効率化", year: 2}
+      - {course_name: "インターネットのしくみ", year: 2}
+      - {course_name: "オブジェクト指向プログラミング", year: 2}
+      - {course_name: "関数型プログラミング", year: 3}
+      - {course_name: "クラウドコンピューティング技術", year: 3}
+      - {course_name: "並行処理プログラミング", year: 3}
+      - {course_name: "ゲームプログラミング演習", year: 3}
+      - {course_name: "プロジェクトマネジメント応用", year: 3}
+      - {course_name: "Webアプリケーション開発演習", year: 3}
+      - {course_name: "ゼミ（質的データ分析&エージェントシミュレーション）", year: 3}
+      - {course_name: "ゼミ（インターネットのしくみ（応用））", year: 3}
+      - {course_name: "チームプログラミング演習", year: 3}
+
+  - group: "デジタルクリエイティブ"
+    items:
+      - {course_name: "Webユーザーエクスペリエンス", year: 1}
+      - {course_name: "メディアアート史", year: 1}
+      - {course_name: "デジタルイラスト演習基礎", year: 2}
+      - {course_name: "3Dモデリング技術演習", year: 2}
+      - {course_name: "ジェネラティブアート演習", year: 2}
+      - {course_name: "動画クリエイター技術演習", year: 3}
+      - {course_name: "Webデザイン演習", year: 3}
+      - {course_name: "デジタルイラスト演習発展", year: 3}
+      - {course_name: "共創場デザイン演習", year: 3}
+      - {course_name: "ゼミ（メディアアート）", year: 3}
+```
+
+## 5. 図から比較的明確に読める接続関係
+
+```yaml
+recommended_preparation:
+  - {from: ["ビジュアルプログラミング"], to: ["Pythonプログラミング"], confidence: "high"}
+
+  - {from: ["ITリテラシー"], to: ["情報セキュリティ概論"], confidence: "high"}
+  - {from: ["ITリテラシー"], to: ["インターネット概論"], confidence: "high"}
+
+  - relation_type: "broad_feeder_relation"
+    from_courses: ["ITリテラシー", "情報セキュリティ概論", "デジタルツールの使い方"]
+    to_courses: ["コンピュータ概論", "情報処理概論", "プロジェクトマネジメント概論"]
+    confidence: "medium"
+    note: "図中で複数の水平線・垂直線が合流している。基礎群から2年次の概論群へ流れていることは明確だが、1対1 の切り分けはしない。"
+
+  - {from: ["コンピュータ概論"], to: ["コンピューターサイエンス概論"], confidence: "high"}
+  - {from: ["コンピューターサイエンス概論"], to: ["オートマトンと形式言語理論"], confidence: "high"}
+  - {from: ["コンピューターサイエンス概論"], to: ["画像処理論"], confidence: "high"}
+
+  - {from: ["Webアプリケーション開発1", "Webアプリケーション開発2"], to: ["Webアプリケーション開発3"], confidence: "high"}
+  - relation_type: "broad_feeder_relation"
+    from_courses: ["Webアプリケーション開発3", "Webアプリケーション開発4"]
+    to_courses: ["Linux概論", "アプリケーション開発応用群"]
+    confidence: "medium"
+    note: "図では Web アプリケーション開発3/4 の下流に Linux 概論および応用群への幹線がある。"
+
+  - relation_type: "broad_feeder_relation"
+    from_courses: ["Linux概論"]
+    to_courses: ["Javaプログラミング演習", "オブジェクト指向プログラミング", "アプリケーション開発応用群"]
+    confidence: "medium"
+
+  - {from: ["インターネットのしくみ"], to: ["関数型プログラミング"], confidence: "high"}
+  - {from: ["関数型プログラミング"], to: ["並行処理プログラミング"], confidence: "high"}
+
+  - relation_type: "broad_feeder_relation"
+    from_courses: ["デジタルイラスト演習基礎", "3Dモデリング技術演習"]
+    to_courses: ["ジェネラティブアート演習"]
+    confidence: "medium"
+
+  - relation_type: "broad_feeder_relation"
+    from_courses: ["デジタルクリエイティブ群", "アプリケーション開発応用群"]
+    to_courses: ["動画クリエイター技術演習", "Webデザイン演習", "デジタルイラスト演習発展", "共創場デザイン演習", "ゼミ（メディアアート）"]
+    confidence: "medium"
+    note: "右側のデジタルクリエイティブ列には、上流の同系統科目と中央の応用群の双方から接続線が入っている。"
+```
+
+## 6. 学習経路として読むときの主なまとまり
+
+### 6.1 IT基礎ルート
+- 1年次の導入:
+  - ITリテラシー
+  - 情報倫理と法
+  - 多言語ITコミュニケーション
+  - デジタルツールの使い方
+  - 情報セキュリティ概論
+- 2年次の概論群:
+  - インターネット概論
+  - コンピュータ概論
+  - 情報処理概論
+  - プロジェクトマネジメント概論
+
+### 6.2 コンピューターサイエンス寄りルート
+- 2年次:
+  - コンピューターサイエンス概論
+  - Webセキュリティ演習
+- 3年次:
+  - オートマトンと形式言語理論
+  - 論理回路概論
+  - 画像処理論
+  - 暗号技術とその応用
+  - ゼミ（情報セキュリティ）
+
+### 6.3 Web/アプリケーション開発ルート
+- 基礎:
+  - Webアプリケーション開発1
+  - Webアプリケーション開発2
+  - Webアプリケーション開発3
+  - Webアプリケーション開発4
+  - Linux概論
+- 応用:
+  - Javaプログラミング演習
+  - JavaScriptによる自動化、効率化
+  - インターネットのしくみ
+  - オブジェクト指向プログラミング
+  - 関数型プログラミング
+  - クラウドコンピューティング技術
+  - 並行処理プログラミング
+  - ゲームプログラミング演習
+  - Webアプリケーション開発演習
+  - チームプログラミング演習
+  - 各種ゼミ
+
+### 6.4 デジタルクリエイティブルート
+- 基礎:
+  - Webユーザーエクスペリエンス
+  - メディアアート史
+  - デジタルイラスト演習基礎
+  - 3Dモデリング技術演習
+  - ジェネラティブアート演習
+- 発展:
+  - 動画クリエイター技術演習
+  - Webデザイン演習
+  - デジタルイラスト演習発展
+  - 共創場デザイン演習
+  - ゼミ（メディアアート）
+
+## 7. 履修者像ガイドの扱い
+- `情報 - 教養として情報を学びたい方向け`
+- `情報 - 情報を専門的に学びたい方向け`
+
+上記2つは、**科目分類ではなく学び方のガイド**として扱う。
+プログラムで扱う場合は `learner_profile_guidance` のような別属性に分離するのがよい。
+
+## 8. 機械処理向け補足
+- この図は 1対1 の prerequisite グラフとしては複雑で、白線の合流点が多い。
+- そのため、厳密な前提判定には使わず、**推奨される学習経路の可視化データ**として扱うのが安全。
+- 正式な前提条件、単位数、開講学期はシラバスまたは科目マスタ側で別管理することを推奨する。
