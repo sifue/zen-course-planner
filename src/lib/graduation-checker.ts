@@ -85,7 +85,9 @@ export function checkGraduation(
 
   // ===== 展開科目 =====
   const expansionCourses = countableCourses.filter(c => c.band === 'expansion')
-  const expansionCredits = sumCredits(expansionCourses)
+  // 社会接続科目の上限超過分（10単位超）は展開科目にも総単位にも算入しない
+  const socialConnectionExcess = socialConnectionExcessCredits(countableCourses)
+  const expansionCredits = sumCredits(expansionCourses) - socialConnectionExcess
 
   // 基盤リテラシー科目（展開）+ 基礎科目の一部（B1の情報・数理系）を合算
   // 基盤リテラシー展開科目
@@ -147,7 +149,8 @@ export function checkGraduation(
   const hasProjectPractice = graduationProjectCourses.some(c => c.isRequiredProjectPractice)
 
   // ===== 総単位数 =====
-  const totalCountableCredits = sumCredits(countableCourses)
+  // 社会接続科目の上限超過分は総単位に算入しない
+  const totalCountableCredits = sumCredits(countableCourses) - socialConnectionExcess
 
   // ===== 判定 =====
   const introOk = introductionCredits >= REQUIRED.INTRODUCTION
@@ -286,7 +289,9 @@ export function checkPromotion(
   }
 
   const countableCourses = uniqueCourses.filter(c => c.countableToGraduation)
-  const totalCredits = sumCredits(countableCourses)
+  // 社会接続科目の上限超過分は進級判定の総単位にも算入しない
+  const totalCredits =
+    sumCredits(countableCourses) - socialConnectionExcessCredits(countableCourses)
 
   return {
     toYear4: {
@@ -302,6 +307,20 @@ export function checkPromotion(
  */
 function sumCredits(courses: Course[]): number {
   return courses.reduce((sum, c) => sum + c.credits, 0)
+}
+
+/**
+ * 社会接続科目の10単位上限を超えた分（総単位・展開科目・進級判定に算入されない切り捨て分）を計算する
+ *
+ * @param courses 卒業算入可（countableToGraduation）の重複除去済み科目リスト
+ * @returns 上限超過分の単位数（10単位以下なら0）
+ */
+function socialConnectionExcessCredits(courses: Course[]): number {
+  const socialConnectionCourses = courses.filter(
+    c => c.band === 'expansion' && c.expansionTrack === 'social_connection'
+  )
+  const earned = sumCredits(socialConnectionCourses)
+  return Math.max(0, earned - SOCIAL_CONNECTION_CAP)
 }
 
 /**
