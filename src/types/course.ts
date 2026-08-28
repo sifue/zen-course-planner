@@ -38,7 +38,7 @@ export type SubjectCategory =
 
 /**
  * シラバスサイト「分野から探す」のカテゴリ（subject_category_id に対応）
- * B1 基礎科目・C展開科目を横断してプレフィックスで決定する
+ * プレフィックスからの推論を基本とし、例外は公式シラバスに基づいて個別補正する
  */
 export type FieldCategory =
   | 'mathematics'       // 数理 (MTH prefix)
@@ -97,8 +97,7 @@ export interface Course {
   isRequiredProjectPractice: boolean
   /**
    * シラバスサイト「分野から探す」に対応するフィールドカテゴリ
-   * 科目コードのプレフィックスで決定（MTH=数理, INF=情報, HUM=文化・思想, SOC=社会・ネットワーク, ECON=経済・マーケット, DIGI=デジタル産業）
-   * BSC/LAN/CAR/OPT/PRJ等はnull
+   * 通常は科目コードのプレフィックスで推論し、BSCなどの例外は公式情報に基づいて個別補正する
    */
   fieldCategory: FieldCategory | null
 

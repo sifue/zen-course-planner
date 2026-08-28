@@ -19,7 +19,10 @@ export type ExpansionTrack =
   | 'world_understanding'
   | 'social_connection';
 
-/** シラバスサイト「分野から探す」に対応するフィールドカテゴリ（プレフィックスで決定） */
+/**
+ * シラバスサイト「分野から探す」に対応するフィールドカテゴリ。
+ * 通常はプレフィックスから推論し、例外はmanual-overrides.jsonで公式情報に合わせる。
+ */
 export type FieldCategory =
   | 'mathematics'       // 数理 (MTH prefix)
   | 'information'       // 情報 (INF prefix)
@@ -35,12 +38,13 @@ export interface BandMapping {
   countableToGraduation: boolean;
   isDigitalIndustryHistoryEligible: boolean;
   isRequiredProjectPractice: boolean;
-  /** シラバスサイト「分野から探す」対応カテゴリ（プレフィックスで決定、対応なしはnull） */
+  /** シラバスサイト「分野から探す」対応カテゴリ（推論できない場合はnull） */
   fieldCategory: FieldCategory | null;
 }
 
 /**
- * プレフィックスからシラバスサイト「分野から探す」のフィールドカテゴリを推論する
+ * プレフィックスからシラバスサイト「分野から探す」のフィールドカテゴリを推論する。
+ * BSCなど、プレフィックスだけでは判定できない科目は手動補正を使用する。
  */
 function inferFieldCategory(prefix: string): FieldCategory | null {
   const map: Record<string, FieldCategory> = {

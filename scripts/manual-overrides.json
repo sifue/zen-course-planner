@@ -15,7 +15,8 @@
     },
     "BSC-1-B1-0204-006": {
       "name": "現代社会とサイエンス",
-      "foundationGroups": ["culture_thought"]
+      "foundationGroups": ["mathematics"],
+      "fieldCategory": "mathematics"
     },
     "BSC-1-B1-0204-009": {
       "name": "心理学",

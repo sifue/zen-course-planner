@@ -124,7 +124,7 @@ export function useFilters(): UseFiltersReturn {
           ) {
             matches = true; break
           }
-          // フィールドカテゴリ（シラバスサイト「分野から探す」）: プレフィックスベース
+          // フィールドカテゴリ（シラバスサイト「分野から探す」）
           if (FIELD_CATEGORIES.has(category) && course.fieldCategory === (category as FieldCategory)) {
             matches = true; break
           }

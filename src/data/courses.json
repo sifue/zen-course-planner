@@ -236,13 +236,13 @@
     "videoUrl": "https://www.youtube.com/embed/nsuPL7mgZ7Q",
     "band": "foundation",
     "foundationGroups": [
-      "culture_thought"
+      "mathematics"
     ],
     "expansionTrack": null,
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "mathematics",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
