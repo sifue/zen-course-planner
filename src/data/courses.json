@@ -96,7 +96,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "information",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -150,7 +150,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "information",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -201,7 +201,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "mathematics",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -287,7 +287,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "culture_thought",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -343,7 +343,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "society_network",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -399,7 +399,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "economy_market",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -455,7 +455,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "economy_market",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -512,7 +512,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "economy_market",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -568,7 +568,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "information",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [
       "ITリテラシー"
@@ -623,7 +623,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "mathematics",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -678,7 +678,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "culture_thought",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -734,7 +734,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "culture_thought",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -790,7 +790,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "society_network",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [
@@ -845,7 +845,7 @@
     "countableToGraduation": true,
     "isDigitalIndustryHistoryEligible": false,
     "isRequiredProjectPractice": false,
-    "fieldCategory": null,
+    "fieldCategory": "society_network",
     "strongPrerequisites": [],
     "recommendedPrerequisites": [],
     "relatedCourses": [

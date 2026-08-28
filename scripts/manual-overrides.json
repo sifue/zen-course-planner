@@ -1,17 +1,20 @@
 {
-  "comment": "自動推論では正確に決定できない科目のband/foundationGroupsを手動で補正するデータ。キーはナンバリング（科目コード）。",
+  "comment": "自動推論では正確に決定できない科目のband/foundationGroups/fieldCategoryを手動で補正するデータ。キーはナンバリング（科目コード）。",
   "overrides": {
     "BSC-1-B1-0204-002": {
       "name": "情報倫理と法",
-      "foundationGroups": ["information"]
+      "foundationGroups": ["information"],
+      "fieldCategory": "information"
     },
     "BSC-1-B1-0204-003": {
       "name": "データサイエンス概論",
-      "foundationGroups": ["mathematics"]
+      "foundationGroups": ["mathematics"],
+      "fieldCategory": "information"
     },
     "BSC-1-B1-0204-004": {
       "name": "数学的思考とは何か",
-      "foundationGroups": ["mathematics"]
+      "foundationGroups": ["mathematics"],
+      "fieldCategory": "mathematics"
     },
     "BSC-1-B1-0204-006": {
       "name": "現代社会とサイエンス",
@@ -20,27 +23,33 @@
     },
     "BSC-1-B1-0204-009": {
       "name": "心理学",
-      "foundationGroups": ["culture_thought"]
+      "foundationGroups": ["culture_thought"],
+      "fieldCategory": "culture_thought"
     },
     "BSC-1-B1-0204-011": {
       "name": "法学Ⅰ",
-      "foundationGroups": ["society_network"]
+      "foundationGroups": ["society_network"],
+      "fieldCategory": "society_network"
     },
     "BSC-1-B1-0204-013": {
       "name": "企業経営",
-      "foundationGroups": ["economy_market"]
+      "foundationGroups": ["economy_market"],
+      "fieldCategory": "economy_market"
     },
     "BSC-1-B1-0204-014": {
       "name": "地域アントレプレナーシップ",
-      "foundationGroups": ["economy_market"]
+      "foundationGroups": ["economy_market"],
+      "fieldCategory": "economy_market"
     },
     "BSC-1-B1-0204-015": {
       "name": "地域課題の解決とイノベーション",
-      "foundationGroups": ["economy_market"]
+      "foundationGroups": ["economy_market"],
+      "fieldCategory": "economy_market"
     },
     "BSC-1-B1-1030-001": {
       "name": "情報セキュリティ概論",
-      "foundationGroups": ["information"]
+      "foundationGroups": ["information"],
+      "fieldCategory": "information"
     },
     "DIGI-1-B1-0204-003": {
       "name": "アニメ産業史",
@@ -78,23 +87,28 @@
     },
     "BSC-1-B1-1030-005": {
       "name": "数学史",
-      "foundationGroups": ["mathematics"]
+      "foundationGroups": ["mathematics"],
+      "fieldCategory": "mathematics"
     },
     "BSC-1-B1-1030-007": {
       "name": "日本文学Ⅰ",
-      "foundationGroups": ["culture_thought"]
+      "foundationGroups": ["culture_thought"],
+      "fieldCategory": "culture_thought"
     },
     "BSC-1-B1-1030-008": {
       "name": "文化人類学Ⅰ",
-      "foundationGroups": ["culture_thought"]
+      "foundationGroups": ["culture_thought"],
+      "fieldCategory": "culture_thought"
     },
     "BSC-1-B1-1030-010": {
       "name": "社会学Ⅰ",
-      "foundationGroups": ["society_network"]
+      "foundationGroups": ["society_network"],
+      "fieldCategory": "society_network"
     },
     "BSC-1-B1-1030-012": {
       "name": "伝わる論理とコミュニケーション",
-      "foundationGroups": ["society_network"]
+      "foundationGroups": ["society_network"],
+      "fieldCategory": "society_network"
     }
   }
 }
