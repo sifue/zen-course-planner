@@ -1,8 +1,9 @@
 /**
- * ナンバリングからband/foundationGroups/expansionTrackを推論するルール
+ * ナンバリングからband/foundationGroups/expansionTrackを推論するフォールバックルール
  *
  * ナンバリング形式: {PREFIX}-{YEAR}-{BAND_CODE}-{OPENING_CODE}-{SEQ}
  * 例: BSC-1-B1-0204-002, INF-2-C1-1030-003
+ * 正式な分類は学生便覧の科目一覧CSVを正とし、データ生成時に上書きする。
  */
 
 export type BandCode = 'introduction' | 'foundation' | 'expansion' | 'graduation_project' | 'free';
@@ -20,8 +21,8 @@ export type ExpansionTrack =
   | 'social_connection';
 
 /**
- * シラバスサイト「分野から探す」に対応するフィールドカテゴリ。
- * 通常はプレフィックスから推論し、例外はmanual-overrides.jsonで公式情報に合わせる。
+ * 学生便覧の「学問分野」に対応するフィールドカテゴリ。
+ * CSVに未掲載の科目に限り、プレフィックスから推論する。
  */
 export type FieldCategory =
   | 'mathematics'       // 数理 (MTH prefix)
@@ -38,13 +39,12 @@ export interface BandMapping {
   countableToGraduation: boolean;
   isDigitalIndustryHistoryEligible: boolean;
   isRequiredProjectPractice: boolean;
-  /** シラバスサイト「分野から探す」対応カテゴリ（推論できない場合はnull） */
+  /** 学生便覧の学問分野に対応するカテゴリ（フォールバックで推論できない場合はnull） */
   fieldCategory: FieldCategory | null;
 }
 
 /**
- * プレフィックスからシラバスサイト「分野から探す」のフィールドカテゴリを推論する。
- * BSCなど、プレフィックスだけでは判定できない科目は手動補正を使用する。
+ * プレフィックスから学問分野を推論するフォールバック処理。
  */
 function inferFieldCategory(prefix: string): FieldCategory | null {
   const map: Record<string, FieldCategory> = {

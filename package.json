@@ -1,12 +1,13 @@
 {
   "name": "zen-course-planner",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:data && tsc -b && vite build",
+    "build": "npm run build:data && npm run validate:data && tsc -b && vite build",
     "build:data": "tsx scripts/build-course-data.ts",
+    "validate:data": "tsx scripts/validate-course-data.ts",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
@@ -41,6 +42,7 @@
     "@typescript-eslint/parser": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "csv-parse": "^7.0.2",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.11",

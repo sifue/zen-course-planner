@@ -10,6 +10,11 @@ import { fileURLToPath } from 'url'
 import { glob } from 'glob'
 import { extractCourse } from './extract-syllabus'
 import { buildPrerequisiteMap, resolvePrerequisites } from './prerequisite-resolver'
+import {
+  applyCurriculumClassification,
+  findCurriculumMapPath,
+  loadCurriculumClassificationIndex,
+} from './curriculum-map-classification'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,6 +30,11 @@ async function main() {
   // シラバスMarkdownファイルを全取得
   const files = await glob('*.md', { cwd: SYLLABUS_DIR, absolute: true })
   console.log(`   発見したファイル数: ${files.length}`)
+
+  // 学生便覧の科目一覧を正として、卒業要件用の分類を読み込む
+  const curriculumMapPath = findCurriculumMapPath(PROJECT_ROOT)
+  const curriculumIndex = loadCurriculumClassificationIndex(curriculumMapPath)
+  console.log(`🗂️  カリキュラム・マップ: ${path.basename(curriculumMapPath)}（${curriculumIndex.size}科目）`)
 
   // 前提科目マップを構築（カリキュラムツリーから）
   console.log('🌳 カリキュラムツリーから前提科目マップを構築中...')
@@ -69,17 +79,35 @@ async function main() {
     }
   }
 
-  // カリキュラムツリーの前提科目マップを適用
-  console.log('🔗 前提科目を解決中...')
+  // 学生便覧の分類と、カリキュラムツリーの前提科目マップを適用
+  console.log('🔗 科目分類と前提科目を適用中...')
+  let matchedByNumbering = 0
+  let matchedByName = 0
+  const unmatchedCourses: string[] = []
   for (const [, entry] of courseById) {
     const { course } = entry
     if (!course) continue
+
+    const classificationMatch = curriculumIndex.find(course)
+    if (classificationMatch) {
+      applyCurriculumClassification(course, classificationMatch.classification)
+      if (classificationMatch.matchedBy === 'numbering') matchedByNumbering++
+      else matchedByName++
+    } else {
+      unmatchedCourses.push(`${course.id}: ${course.name}`)
+    }
 
     course.recommendedPrerequisites = resolvePrerequisites(
       course.name,
       course.recommendedPrerequisites,
       prereqMap
     )
+  }
+
+  console.log(`   分類照合: 科目コード ${matchedByNumbering}件 / 科目名 ${matchedByName}件`)
+  if (unmatchedCourses.length > 0) {
+    console.warn(`   ⚠️  科目一覧CSVに未掲載: ${unmatchedCourses.length}件`)
+    for (const course of unmatchedCourses) console.warn(`      ${course}`)
   }
 
   // 重複排除したcourseリストを作成
@@ -102,7 +130,7 @@ async function main() {
   // foundationGroupsが空のfoundation科目を警告
   const missingGroups = courses.filter(c => c.band === 'foundation' && c.foundationGroups.length === 0)
   if (missingGroups.length > 0) {
-    console.warn(`\n⚠️  foundationGroupsが未設定の基礎科目（manual-overrides.jsonの追加が必要）:`)
+    console.warn(`\n⚠️  foundationGroupsが未設定の基礎科目（科目一覧CSVの確認が必要）:`)
     for (const c of missingGroups) {
       console.warn(`   ${c.id}: ${c.name}`)
     }

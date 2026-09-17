@@ -4,13 +4,13 @@
  * docs/requirements/zen_graduation_validator_sample.py のTypeScript移植版
  */
 
-import type { Course, FoundationGroup } from '@/types/course'
+import type { Course, FoundationGroup } from '../types/course'
 import type {
   GraduationCheckResult,
   PromotionCheckResult,
   FoundationGroupStatus,
-} from '@/types/requirements'
-import type { PlannedCourse } from '@/types/plan'
+} from '../types/requirements'
+import type { PlannedCourse } from '../types/plan'
 
 const SOCIAL_CONNECTION_CAP = 10
 

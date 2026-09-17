@@ -29,8 +29,8 @@ const CATEGORY_OPTIONS = [
   { value: 'free' as const, label: '自由', color: 'bg-gray-100 text-gray-600 data-[state=on]:bg-gray-500 data-[state=on]:text-white data-[state=on]:border-gray-500' },
 ]
 
-/** 基礎科目分野フィルター（数理・情報・文化思想・社会・デジタル産業） */
-const FOUNDATION_GROUP_OPTIONS = [
+/** 学問分野フィルター（学生便覧の「学問分野」に対応） */
+const FIELD_CATEGORY_OPTIONS = [
   { value: 'mathematics' as const, label: '数理', color: 'bg-teal-100 text-teal-800 data-[state=on]:bg-teal-600 data-[state=on]:text-white data-[state=on]:border-teal-600' },
   { value: 'information' as const, label: '情報', color: 'bg-sky-100 text-sky-800 data-[state=on]:bg-sky-600 data-[state=on]:text-white data-[state=on]:border-sky-600' },
   { value: 'culture_thought' as const, label: '文化・思想', color: 'bg-purple-100 text-purple-800 data-[state=on]:bg-purple-600 data-[state=on]:text-white data-[state=on]:border-purple-600' },
@@ -64,7 +64,7 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
 
   // 各セクションのアクティブフィルター数
   const categoryActiveCount = CATEGORY_OPTIONS.filter(o => filters.filters.categories.has(o.value)).length
-  const foundationActiveCount = FOUNDATION_GROUP_OPTIONS.filter(o => filters.filters.categories.has(o.value)).length
+  const fieldCategoryActiveCount = FIELD_CATEGORY_OPTIONS.filter(o => filters.filters.categories.has(o.value)).length
   const teachingMethodActiveCount = filters.filters.teachingMethods.size
 
   return (
@@ -116,7 +116,7 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
         </div>
       </div>
 
-      {/* アコーディオン：分類 / 基礎科目分野 / 授業方法 */}
+      {/* アコーディオン：分類 / 学問分野 / 授業方法 */}
       <Accordion.Root
         type="multiple"
         defaultValue={['categories']}
@@ -147,17 +147,17 @@ export function CourseFilter({ filters, totalCount, filteredCount }: CourseFilte
           </Accordion.Content>
         </Accordion.Item>
 
-        {/* 基礎科目分野フィルター */}
+        {/* 学問分野フィルター */}
         <Accordion.Item value="foundation">
           <Accordion.Header>
             <Accordion.Trigger className="group flex w-full cursor-pointer items-center justify-between px-3 py-2 text-left hover:bg-gray-50 transition-colors">
-              <SectionHeader label="基礎科目分野" activeCount={foundationActiveCount} />
+              <SectionHeader label="学問分野" activeCount={fieldCategoryActiveCount} />
               <ChevronDown className="h-3.5 w-3.5 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
             <div className="flex flex-wrap gap-1.5 px-3 pb-2.5">
-              {FOUNDATION_GROUP_OPTIONS.map(({ value, label, color }) => (
+              {FIELD_CATEGORY_OPTIONS.map(({ value, label, color }) => (
                 <Toggle.Root
                   key={value}
                   pressed={filters.filters.categories.has(value)}

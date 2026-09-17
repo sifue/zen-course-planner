@@ -4,7 +4,7 @@ import type { BandCode, ExpansionTrack, FieldCategory, TeachingMethod } from './
 export type CategoryFilterKey =
   | BandCode
   | ExpansionTrack
-  | FieldCategory   // シラバスサイト「分野から探す」対応（数理・情報・文化・思想・社会・ネットワーク・経済・マーケット・デジタル産業）
+  | FieldCategory   // 学生便覧の学問分野（数理・情報・文化・思想・社会・ネットワーク・経済・マーケット・デジタル産業）
 
 /** フィルター状態 */
 export interface FilterState {

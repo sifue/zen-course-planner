@@ -15,6 +15,10 @@ ZEN大学の4年間の履修計画を立てるためのWebアプリケーショ�
 - Slackbot AIへのおすすめ科目相談プロンプト生成
 - PC・スマートフォン両対応（タッチ操作対応）
 
+## 学内向け科目一覧
+- [【学生便覧】科目一覧（カリキュラム・マップ）_20260401](https://docs.google.com/spreadsheets/d/1dVaGoJaAVbhKeweNVWwrN7FynuO3BYDe5KuhNXk9C3Y/edit?gid=1513620685#gid=1513620685)
+
+
 ## 開発環境のセットアップ
 
 ### 必要なもの

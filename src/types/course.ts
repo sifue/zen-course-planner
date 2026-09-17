@@ -37,8 +37,7 @@ export type SubjectCategory =
   | 'free'              // 自由
 
 /**
- * シラバスサイト「分野から探す」のカテゴリ（subject_category_id に対応）
- * プレフィックスからの推論を基本とし、例外は公式シラバスに基づいて個別補正する
+ * 学生便覧の科目一覧にある「学問分野」
  */
 export type FieldCategory =
   | 'mathematics'       // 数理 (MTH prefix)
@@ -96,8 +95,7 @@ export interface Course {
   /** プロジェクト実践（卒業プロジェクト必修）に該当するか */
   isRequiredProjectPractice: boolean
   /**
-   * シラバスサイト「分野から探す」に対応するフィールドカテゴリ
-   * 通常は科目コードのプレフィックスで推論し、BSCなどの例外は公式情報に基づいて個別補正する
+   * 学生便覧の科目一覧にある「学問分野」に対応するカテゴリ
    */
   fieldCategory: FieldCategory | null
 
