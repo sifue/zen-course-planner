@@ -156,13 +156,13 @@ export function AppHeader({
 
           {/* エクスポート */}
           <Button variant="ghost" size="sm" onClick={onExport} aria-label="Markdownでエクスポート">
-            <Download className="h-3.5 w-3.5" />
+            <Upload className="h-3.5 w-3.5" />
             <span className="hidden lg:inline">エクスポート</span>
           </Button>
 
           {/* インポート */}
           <Button variant="ghost" size="sm" onClick={onImport} aria-label="Markdownからインポート">
-            <Upload className="h-3.5 w-3.5" />
+            <Download className="h-3.5 w-3.5" />
             <span className="hidden lg:inline">インポート</span>
           </Button>
 
