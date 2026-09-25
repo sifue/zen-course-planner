@@ -291,6 +291,7 @@ export default function PlannerPage() {
               setShowImportModal(false)
             }}
             currentPlanName={plan.name}
+            courseMap={COURSE_MAP}
           />
         )}
 
@@ -303,7 +304,7 @@ export default function PlannerPage() {
             graduation={graduation.graduation}
             onImport={(courses) => {
               for (const c of courses) {
-                addCourse(c.courseId, c.year, c.quarter)
+                addCourse(c.courseId, c.year, c.quarter, c.note)
               }
               setShowPromptModal(false)
             }}

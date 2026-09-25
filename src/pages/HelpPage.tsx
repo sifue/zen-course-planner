@@ -124,7 +124,8 @@ export default function HelpPage() {
             <ol className="mt-2 space-y-1.5 list-decimal list-inside">
               <li>あなたの希望や思考を入力する</li>
               <li>生成されたプロンプトをコピーして Slack の Slackbot AIに貼り付ける</li>
-              <li>AIが返したMarkdownテーブルを「AIの回答をインポート」タブで取り込む</li>
+              <li>AIが返した回答全体（末尾のインポート用JSONコメントを含む）を「AIの回答をインポート」タブで取り込む</li>
+              <li>提案科目は、回答に記載された公式シラバスURLと学生便覧で最終確認する</li>
             </ol>
           </Section>
 

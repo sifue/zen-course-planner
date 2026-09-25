@@ -3,6 +3,7 @@ import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Alert } from '@/components/ui/Alert'
 import { importFromMarkdown } from '@/lib/markdown-importer'
+import type { Course } from '@/types/course'
 import type { CoursePlan } from '@/types/plan'
 
 interface ImportModalProps {
@@ -10,9 +11,10 @@ interface ImportModalProps {
   onOpenChange: (open: boolean) => void
   onImport: (plan: Partial<CoursePlan>) => void
   currentPlanName: string
+  courseMap: Record<string, Course>
 }
 
-export function ImportModal({ open, onOpenChange, onImport, currentPlanName }: ImportModalProps) {
+export function ImportModal({ open, onOpenChange, onImport, currentPlanName, courseMap }: ImportModalProps) {
   const [text, setText] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [preview, setPreview] = useState<{ planName?: string; count: number } | null>(null)
@@ -26,7 +28,7 @@ export function ImportModal({ open, onOpenChange, onImport, currentPlanName }: I
       return
     }
 
-    const result = importFromMarkdown(text)
+    const result = importFromMarkdown(text, { courseMap })
     if (!result.success) {
       setError(result.error ?? 'インポートに失敗しました。')
       return
@@ -39,7 +41,7 @@ export function ImportModal({ open, onOpenChange, onImport, currentPlanName }: I
   }
 
   const handleImport = () => {
-    const result = importFromMarkdown(text)
+    const result = importFromMarkdown(text, { courseMap })
     if (!result.success || !result.plannedCourses) return
 
     onImport({
@@ -67,7 +69,7 @@ export function ImportModal({ open, onOpenChange, onImport, currentPlanName }: I
     >
       <div className="space-y-3">
         <p className="text-sm text-gray-600">
-          このアプリでエクスポートしたMarkdown、またはSlackbot AIが出力したMarkdownテーブルを貼り付けてください。
+          このアプリでエクスポートしたMarkdown、またはIMPORT_DATAコメントを含むAIの回答全体を貼り付けてください。
         </p>
 
         <Alert variant="warning">

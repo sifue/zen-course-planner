@@ -27,8 +27,15 @@ export function PromptModal({ open, onOpenChange, plan, courseMap, graduation, o
   const [aiOutput, setAiOutput] = useState('')
   const [importError, setImportError] = useState<string | null>(null)
   const [importPreviewCount, setImportPreviewCount] = useState<number | null>(null)
+  const existingCourseIds = new Set(plan.plannedCourses.map(course => course.courseId))
 
-  const prompt = generateSlackbotPrompt(userThoughts, plan.plannedCourses, courseMap, graduation)
+  const prompt = generateSlackbotPrompt(
+    userThoughts,
+    plan.plannedCourses,
+    courseMap,
+    graduation,
+    plan.maxYears
+  )
 
   const handleCopyPrompt = async () => {
     try {
@@ -49,7 +56,11 @@ export function PromptModal({ open, onOpenChange, plan, courseMap, graduation, o
       return
     }
 
-    const result = importFromMarkdown(aiOutput)
+    const result = importFromMarkdown(aiOutput, {
+      courseMap,
+      maxYear: plan.maxYears,
+      excludedCourseIds: existingCourseIds,
+    })
     if (!result.success || !result.plannedCourses) {
       setImportError(result.error ?? 'インポートできる科目が見つかりませんでした。')
       return
@@ -59,7 +70,11 @@ export function PromptModal({ open, onOpenChange, plan, courseMap, graduation, o
   }
 
   const handleImportAiOutput = () => {
-    const result = importFromMarkdown(aiOutput)
+    const result = importFromMarkdown(aiOutput, {
+      courseMap,
+      maxYear: plan.maxYears,
+      excludedCourseIds: existingCourseIds,
+    })
     if (!result.success || !result.plannedCourses) return
     onImport(result.plannedCourses)
     setAiOutput('')
@@ -155,7 +170,7 @@ export function PromptModal({ open, onOpenChange, plan, courseMap, graduation, o
       {tab === 'import' && (
         <div className="space-y-3">
           <p className="text-sm text-gray-600">
-            Slackbot AIが返したMarkdownテーブルを貼り付けて、科目を履修計画に追加します。
+            Slackbot AIの回答全体（末尾のIMPORT_DATAコメントを含む）を貼り付けて、科目を履修計画に追加します。
             既存の科目はそのまま残り、AIが提案した科目が追加されます。
           </p>
 
@@ -166,7 +181,7 @@ export function PromptModal({ open, onOpenChange, plan, courseMap, graduation, o
               setImportError(null)
               setImportPreviewCount(null)
             }}
-            placeholder="AIの出力を貼り付けてください..."
+            placeholder="IMPORT_DATAコメントを含むAIの回答全体を貼り付けてください..."
             className="w-full h-48 rounded-lg border border-gray-200 p-3 text-xs font-mono text-gray-700 bg-white resize-none focus:outline-none focus:border-zen-500 focus:ring-1 focus:ring-zen-500"
             aria-label="AIの出力"
           />

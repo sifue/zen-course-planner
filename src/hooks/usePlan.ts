@@ -32,7 +32,7 @@ export interface UsePlanReturn {
   /** 計画名を変更する */
   setPlanName: (name: string) => void
   /** 科目をグリッドに追加する（すでに配置済みの場合は移動） */
-  addCourse: (courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => void
+  addCourse: (courseId: string, year: number, quarter: 1 | 2 | 3 | 4, note?: string) => void
   /** グリッド内で科目を移動する */
   moveCourse: (courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => void
   /** 科目をグリッドから削除する */
@@ -70,12 +70,17 @@ export function usePlan(initialPlan?: CoursePlan): UsePlanReturn {
     updatePlan(() => ({ name }))
   }, [updatePlan])
 
-  const addCourse = useCallback((courseId: string, year: number, quarter: 1 | 2 | 3 | 4) => {
+  const addCourse = useCallback((
+    courseId: string,
+    year: number,
+    quarter: 1 | 2 | 3 | 4,
+    note?: string
+  ) => {
     updatePlan(prev => ({
       plannedCourses: [
         // 既存の配置を除去（同じ科目の重複を避ける）
         ...prev.plannedCourses.filter(pc => pc.courseId !== courseId),
-        { courseId, year, quarter },
+        { courseId, year, quarter, note },
       ],
     }))
   }, [updatePlan])

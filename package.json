@@ -1,13 +1,14 @@
 {
   "name": "zen-course-planner",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:data && npm run validate:data && tsc -b && vite build",
+    "build": "npm run build:data && npm run validate:data && npm run validate:ai && tsc -b && vite build",
     "build:data": "tsx scripts/build-course-data.ts",
     "validate:data": "tsx scripts/validate-course-data.ts",
+    "validate:ai": "tsx scripts/validate-ai-consultation.ts",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
